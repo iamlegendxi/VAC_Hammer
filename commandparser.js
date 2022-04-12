@@ -15,6 +15,7 @@ module.exports = {
                 await sendReply(reply, message, asInteraction);
                 break;
             case "makeDE":
+                break;
         }
     }
 }
