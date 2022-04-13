@@ -7,22 +7,23 @@ module.exports = {
     parseCommand: async function parseCommand(message, asInteraction) {
         var msg = message.content;
         var args = msg.split(" ");
-        var command = asInteraction ? args[0] : args[0].slice(1);
+        var command = asInteraction ? args[0].replace("?","") : args[0].slice(1);
 
-        switch (command) {
-            case "hivac":
-                var reply = `Hello, ${message.author}`
-                await message.channel.send(reply);
-                break;
-            case "t":
-                if (message.member.roles.cache.some(role => role.name === "Admin")) {
-                    if (!args[1]) return; //handle this later, maybe replace with a help role?
-                    await Transactions.execute(message, args.slice(1));
-                }
-
-                break;
+        if (command == "hivac") {
+            var reply = `Hello, ${message.author}`
+            await message.channel.send(reply);
+            return true;
         }
-        message.react('✅');
+        
+        else if (Transactions.exists(command)) {
+            if (message.member.roles.cache.some(role => role.name === "Admin")) {
+                return await Transactions.execute(message, args);
+            }
+            else {
+                message.channel.send("Error: You must be an admin to run that command.")
+                return false;
+            }
+        }
     },
 
     // parseSlashCommand: async function parseSlashCommand(interaction, asInteraction) {

@@ -1,6 +1,7 @@
 {
     "prefix": "?",
-    "owner_id": "205364070566592513",
+    "bot_owner_id": "205364070566592513",
+    "server_owner_id": "845158362961674250",
     "channels": {
         "announcement_channel_id": "",
         "admin_channel_id": "",
