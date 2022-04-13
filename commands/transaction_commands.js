@@ -23,13 +23,16 @@ const COMMANDS = {
         if (!args[0]) return false;
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">"));
         let targetMember = await message.guild.members.cache.get(targetId);
-        let desiredNickname = (args[1] ? args[1] : targetMember.user.username);
+        let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
+        if (desiredNickname.length > 28) {
+            message.channel.send("Error: desired nickname is too long.")
+            return false;
+        }
         let deRole = await message.guild.roles.cache.find(r => r.name === settings.roles.default_de_role_name);
         let faRole = await message.guild.roles.cache.find(r => r.name = settings.roles.default_fa_role_name);
 
         if (targetId === settings.server_owner_id) {
             message.channel.send("Cannot modify nickname for this user.")
-            message.react("❌");
             return false;
         }
 
