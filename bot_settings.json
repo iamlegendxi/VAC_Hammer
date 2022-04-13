@@ -2,8 +2,13 @@
     "prefix": "?",
     "owner_id": "205364070566592513",
     "channels": {
-        "announcement_channel": "",
-        "admin_channel": "",
-        "bot_commands_channel": ""
+        "announcement_channel_id": "",
+        "admin_channel_id": "",
+        "bot_commands_channel_id": ""
+    },
+    "roles": {
+        "default_role_name": "Viewer",
+        "default_de_role_name": "Draft Eligible",
+        "default_fa_role_name": "Free Agent"
     }
 }
