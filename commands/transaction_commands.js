@@ -68,7 +68,8 @@ const COMMANDS = {
 
         //keep nickname if user is a GM, FA, or AGM
         if (!(targetMember.roles.cache.some((r) => { return r.name === settings.roles.player_retireable.fa_role_name
-            || r.name === settings.roles.gm_retireable.gm_role_name || r.name === settings.roles.gm_retireable.agm_role_name}))) {
+            || r.name === settings.roles.gm_retireable.gm_role_name || r.name === settings.roles.gm_retireable.agm_role_name})
+            && targetMember.nickname.includes('|'))) {
                 targetMember.setNickname(targetMember.nickname.split('|')[1].trim());
             }
         message.channel.send("o7");
@@ -78,11 +79,12 @@ const COMMANDS = {
 }
 
 async function removeRoles(jsonObj, message, targetMember) {
+    let removedAny = false;
     for (var x of Object.keys(jsonObj)) {
         let targetRole = message.guild.roles.cache.find(r => r.name === jsonObj[x]);
         if (!targetRole) continue;
         let removed = await targetMember.roles.remove(targetRole);
-        if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name}`)
+        if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
     }
     //todo: add franchise role iteration, assign former gm/player
 }
