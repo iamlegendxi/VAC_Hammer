@@ -1,0 +1,21 @@
+{
+    "bad": {
+        "role_id": "963905754711076906",
+        "gm_id": "388890741721530368",
+        "name": "AWP Crutches",
+        "teams": {
+            "elite": "Serial Whiffers",
+            "challenger": ""
+        }
+    },
+
+    "lol": {
+        "role_id": "963905820351946764",
+        "gm_id": "174341575000850432",
+        "name": "Stinky Poo Poo Eaters",
+        "teams": {
+            "elite": "Shit Flingers",
+            "challenger": ""
+        }
+    }
+}

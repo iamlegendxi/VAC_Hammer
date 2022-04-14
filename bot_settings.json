@@ -5,7 +5,8 @@
     "channels": {
         "announcement_channel_id": "",
         "admin_channel_id": "",
-        "bot_commands_channel_id": ""
+        "bot_commands_channel_id": "",
+        "transaction_channel_id": "963553611051319316"
     },
     "roles": {
         "default_role_name": "Viewer",
