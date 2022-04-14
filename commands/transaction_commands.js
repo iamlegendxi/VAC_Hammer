@@ -1,5 +1,7 @@
 var settings = require('../bot_settings');
-var franchises = require('../data/test_franchises.json');
+var franchises = require('../data/test_franchises');
+var colors = require('../data/colors');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 
@@ -68,15 +70,17 @@ const COMMANDS = {
         await (targetMember.guild.fetch());
 
         //keep nickname if user is a GM, FA, or AGM
-        if (!(targetMember.roles.cache.some((r) => { return r.name === settings.roles.player_retireable.fa_role_name
-            || r.name === settings.roles.gm_retireable.gm_role_name || r.name === settings.roles.gm_retireable.agm_role_name})
+        if (!(targetMember.roles.cache.some((r) => {
+            return r.name === settings.roles.player_retireable.fa_role_name
+                || r.name === settings.roles.gm_retireable.gm_role_name || r.name === settings.roles.gm_retireable.agm_role_name
+        })
             && targetMember.nickname.includes('|'))) {
-                targetMember.setNickname(targetMember.nickname.split('|')[1].trim());
-            }
+            targetMember.setNickname(targetMember.nickname.split('|')[1].trim());
+        }
         message.channel.send("o7");
         return true;
     },
-    
+
     "sign": async (message, args) => {
         if (!args[1] && !args[2]) {
             message.channel.send("Missing arguments. Proper syntax is: ?sign [@player] [abbreviation] [tier]");
@@ -116,11 +120,13 @@ const COMMANDS = {
 
         await targetMember.roles.add(targetRole);
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
+
         //tier should already be assigned to a player
         console.log(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`)
-        transactionChannel.send(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`);
+        //transactionChannel.send(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`);
+        postTransaction("SIGN", `<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
 
-        let desiredName = (targetMember.nickname &&  targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
+        let desiredName = (targetMember.nickname && targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
         await targetMember.setNickname(`${abbrev.toUpperCase()} | ${desiredName}`);
         // await targetMember.setNickname(`${abbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
         return true;
@@ -135,13 +141,13 @@ const COMMANDS = {
         let abbrev = args[1].toLowerCase(); let tier = args[2].toLowerCase();
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = message.guild.members.cache.get(targetId);
-        let faRole = message.guild.roles.cache.find(r =>  r.name === settings.roles.player_retireable.fa_role_name);
+        let faRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name);
         let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
 
         if (!(targetMember.nickname) || !(targetMember.nickname.includes('|'))) { //target isn't in the league?
             throw "User should have a nickname and is trying to be cut.";
         }
-        
+
         await targetMember.guild.fetch();
 
         if (!(targetMember.roles.cache.some(r => r.name === franchises[abbrev].name))) {
@@ -152,21 +158,55 @@ const COMMANDS = {
         await targetMember.roles.remove(targetMember.roles.cache.find(r => r.name === franchises[abbrev].name));
         await targetMember.roles.add(faRole);
         console.log(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
-        transactionChannel.send(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
+        //transactionChannel.send(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
+        postTransaction("CUT", `<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
         await targetMember.setNickname(`FA | ${targetMember.nickname.split('|')[1].trim()}`);
         return true;
-        
+
     }
 
 }
 
 async function removeRoles(jsonObj, message, targetMember) {
-    let removedAny = false;
     for (var x of Object.keys(jsonObj)) {
-        let targetRole = message.guild.roles.cache.find(r => r.name === jsonObj[x]);
+        let targetRole = targetMember.roles.cache.find(r => r.name === jsonObj[x]);
         if (!targetRole) continue;
         let removed = await targetMember.roles.remove(targetRole);
         if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
     }
-    //todo: add franchise role iteration, assign former gm/player
+    for (var x of Object.keys(franchises)) {
+        let targetRole = targetMember.roles.cache.find(r => r.name === franchises[x].name);
+        if (!targetRole) continue;
+        let removed = await targetMember.roles.remove(targetRole);
+        if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
+    }
+    //todo: assign former gm/player
+}
+
+async function postTransaction(type, contents, franchise, tier, channel, tradeContents = {}) {
+    try {
+        const transaction_embed = new MessageEmbed()
+            .setColor(colors.tier[tier])
+            .setTitle("🚨🚨 TRANSACTION ALERT 🚨🚨")
+            .setDescription(contents)
+            .setThumbnail(franchise.image)
+            .setTimestamp()
+            .setFooter({ text: `Type: ${type}` });
+        if (tradeContents != {} && type == "TRADE") {
+            //post trade contents
+        }
+
+        else if (type != "TRADE") {
+            transaction_embed.addFields(
+                { name: 'Team', value: `${franchise.teams[tier]}`, inline: true },
+                { name: 'Franchise', value: `${franchise.name}`, inline: true },
+                { name: 'GM', value: `<@${franchise.gm_id}>`, inline: true })
+        }
+
+        channel.send({ embeds: [transaction_embed] });
+    } catch (error) {
+        console.error(`An error occurred while trying to post a transaction:\n\n ${error}`)
+        throw error;
+    }
+
 }
