@@ -20,5 +20,9 @@
             "fa_role_name": "Free Agent",
             "captain_role_name": "Captain"
         }
+    },
+    "match_days": {
+        "day1": 4,
+        "day2": 6
     }
 }

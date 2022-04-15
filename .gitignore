@@ -1,1 +1,3 @@
 settings.json
+package*.json
+node_modules

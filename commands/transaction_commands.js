@@ -1,6 +1,7 @@
 var settings = require('../bot_settings');
 var franchises = require('../data/test_franchises');
 var colors = require('../data/colors');
+var cron = require('cron');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -19,6 +20,29 @@ module.exports = {
         return (COMMANDS[cmd_type] ? true : false);
     }
 }
+
+//key should be a user id as a string, and value should be an array with the franchise json and the GuildMember object
+var subsList = {};
+
+//default: 59 59 23 * * ${settings.match_days.day1},${settings.match_days.day2}
+var clearSubs = new cron.CronJob(`59 59 23 * * ${settings.match_days.day1},${settings.match_days.day2}`, async () => {
+
+    if (subsList == {}) return;
+
+    for (var s in subsList) {
+        let targetUser = subsList[s][0];
+
+        await targetUser.guild.fetch();
+
+        await targetUser.roles.remove(targetUser.roles.cache.find(r => r.id === subsList[s][1].role_id));
+        console.log(`Automatically unsubbed player: ${s}`);
+        postTransaction("UNSUB", `<@${targetUser.user.id}> has finished their time as a substitute.`,
+            subsList[s][1], null, targetUser.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
+    }
+
+    subsList = {};
+
+});
 
 const COMMANDS = {
 
@@ -47,8 +71,8 @@ const COMMANDS = {
             return false;
         }
 
-        targetMember.roles.add(deRole);
-        targetMember.setNickname(`DE | ${desiredNickname}`);
+        await targetMember.roles.add(deRole);
+        await targetMember.setNickname(`DE | ${desiredNickname}`);
         return true;
     },
 
@@ -77,7 +101,7 @@ const COMMANDS = {
             && targetMember.nickname.includes('|'))) {
             targetMember.setNickname(targetMember.nickname.split('|')[1].trim());
         }
-        message.channel.send("o7");
+        await message.channel.send("o7");
         return true;
     },
 
@@ -98,20 +122,24 @@ const COMMANDS = {
 
         await (targetMember.guild.fetch());
 
-        for (var x of Object.keys(franchises)) {
-            let f = await message.guild.roles.cache.find(r => r.id === franchises[x].role_id);
-            if (targetMember.roles.cache.some(r => r.id === f.id)) {
-                message.channel.send("User is already signed to a franchise.")
+        if (!(targetMember.user.id != franchises[abbrev].gm_id)) { //GMs can never be free agents and will always be signed to a franchise
+
+            for (var x of Object.keys(franchises)) {
+                let f = await message.guild.roles.cache.find(r => r.id === franchises[x].role_id);
+                if (targetMember.roles.cache.some(r => r.id === f.id)) {
+                    message.channel.send("User is already signed to a franchise.")
+                    return false;
+                }
+            }
+
+            if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))) {
+                message.channel.send("User is not a free agent.")
                 return false;
             }
+
         }
 
-        if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))) {
-            message.channel.send("User is not a free agent.")
-            return false;
-        }
-
-        else if (franchises[abbrev].teams[tier] == "") {
+        if (franchises[abbrev].teams[tier] == "") {
             message.channel.send("This franchise does not have a team configured for the specified tier.");
             return false;
         }
@@ -124,7 +152,7 @@ const COMMANDS = {
         //tier should already be assigned to a player
         console.log(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`)
         //transactionChannel.send(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`);
-        postTransaction("SIGN", `<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
+        await postTransaction("SIGN", `<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
 
         let desiredName = (targetMember.nickname && targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
         await targetMember.setNickname(`${abbrev.toUpperCase()} | ${desiredName}`);
@@ -159,11 +187,88 @@ const COMMANDS = {
         await targetMember.roles.add(faRole);
         console.log(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
         //transactionChannel.send(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
-        postTransaction("CUT", `<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
-        await targetMember.setNickname(`FA | ${targetMember.nickname.split('|')[1].trim()}`);
+        await postTransaction("CUT", `<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
+        if (!(targetMember.user.id == franchises[abbrev].gm_id))
+            await targetMember.setNickname(`FA | ${targetMember.nickname.split('|')[1].trim()}`);
         return true;
 
-    }
+    },
+
+    "sub": async (message, args) => {
+        if (!args[1] && !args[2]) {
+            message.channel.send("Missing arguments. Proper syntax is: ?sub [@player] [abbreviation] [tier]");
+            return false;
+        }
+        let abbrev = args[1].toLowerCase(); let tier = args[2].toLowerCase();
+        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetMember = message.guild.members.cache.get(targetId);
+        let targetRole = message.guild.roles.cache.find(r => r.id === franchises[abbrev].role_id);
+        let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
+
+        await targetMember.guild.fetch();
+
+        if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))) {
+            message.channel.send("User is not registered for the league, or is missing the Free Agent role.");
+            return false;
+        }
+
+        //Check today's date, and if it's not a match day, the command fails  (unsure if this is needed but it's better to be safe than sorry)
+        var today = new Date();
+
+        if (!(today.getDay() == settings.match_days.day1 || today.getDay() == settings.match_days.day2)) {
+            message.channel.send("Sub transactions must be completed on a match day.");
+            return false;
+        }
+
+        for (var x of Object.keys(franchises)) {
+            if (targetMember.roles.cache.some(r => r.id === franchises[x].role_id)) {
+                message.channel.send(`Player is already signed to the ${franchises[x].name}`);
+                return false;
+            }
+        }
+
+        if (!(clearSubs.running)) clearSubs.start();
+
+        //necessary checks are done, we're good to process the sub
+        await targetMember.roles.add(targetRole);
+        subsList[targetMember.user.id] = [targetMember, franchises[abbrev]];
+        await postTransaction("SUB", `<@${targetMember.user.id}> has signed a temporary contract with the ${franchises[abbrev].teams[tier]}!`,
+            franchises[abbrev], tier, transactionChannel);
+        return true;
+    },
+
+    "unsub": async (message, args) => { //should only be used if automatic sub release fails
+        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetMember = message.guild.members.cache.get(targetId);
+
+        await targetMember.guild.fetch();
+
+        await targetMember.roles.remove(targetMember.roles.cache.find(r => r.id === subsList[targetId][1].role_id));
+        delete subsList[targetMember.user.id];
+        console.log(`Manually unsubbed player: ${targetMember.user.id}`);
+        postTransaction("UNSUB", `<@${targetMember.user.id}> has finished their time as a substitute.`,
+            subsList[targetId][1], null, targetMember.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
+
+            return true;
+    },
+
+    "showsubs": async (message, args) => {
+
+        const subsEmbed = new MessageEmbed()
+        .setColor("#611010")
+        .setTitle("List of active substitutes");
+        var msg = "```";
+
+        for (var s in subsList) {
+            msg = msg + subsList[s][0].nickname + " (" + s + ")\n";
+        }
+
+        msg = msg + "```";
+        subsEmbed.setDescription(msg);
+        await message.channel.send({ embeds: [subsEmbed] });
+
+        return true;
+    },
 
 }
 
@@ -186,24 +291,24 @@ async function removeRoles(jsonObj, message, targetMember) {
 async function postTransaction(type, contents, franchise, tier, channel, tradeContents = {}) {
     try {
         const transaction_embed = new MessageEmbed()
-            .setColor(colors.tier[tier])
+            .setColor(tier ? colors.tier[tier] : "#808080")
             .setTitle("🚨🚨 TRANSACTION ALERT 🚨🚨")
             .setDescription(contents)
-            .setThumbnail(franchise.image)
+            .setThumbnail(franchise ? franchise.image : "")
             .setTimestamp()
             .setFooter({ text: `Type: ${type}` });
         if (tradeContents != {} && type == "TRADE") {
             //post trade contents
         }
 
-        else if (type != "TRADE") {
+        else if (tier && franchise) {
             transaction_embed.addFields(
                 { name: 'Team', value: `${franchise.teams[tier]}`, inline: true },
                 { name: 'Franchise', value: `${franchise.name}`, inline: true },
                 { name: 'GM', value: `<@${franchise.gm_id}>`, inline: true })
         }
 
-        channel.send({ embeds: [transaction_embed] });
+        await channel.send({ embeds: [transaction_embed] });
     } catch (error) {
         console.error(`An error occurred while trying to post a transaction:\n\n ${error}`)
         throw error;
