@@ -14,7 +14,7 @@ module.exports = {
                 return false;
             }
         }
-        else if (cmd_type.toLowerCase().includes("draft") && !draftMode) {
+        else if (cmd_type.toLowerCase() == "draft" && !draftMode) {
             await message.channel.send("Draft mode is not enabled.");
             return false;
         }
@@ -283,21 +283,20 @@ const COMMANDS = {
 
     "toggleDraftMode": async (message, args) => {
 
-        console.log(draftTier);
         if (!args[0] || !args[1]) {
             await message.channel.send("Missing arguments. Proper syntax is: ?toggleDraftMode [season] [tier]");
             return false;
         }
-        else if (draftTier != "" && args[1] != draftTier) {
+        else if (draftTier != "" && args[1].toLowerCase() != draftTier.toLowerCase()) {
             await message.channel.send(`Cannot begin the ${args[1]} draft without first ending the ${draftTier} draft.`);
             return false;
         }
         let season = args[0];
-        let tier = args[1];
+        let tier = args[1].toLowerCase();
         let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
         const draftEmbed = new MessageEmbed()
             .setColor(colors[tier])
-            .setTitle(`The Season ${season} ${tier} draft has now ${draftMode ? "ended" : "started"}!`)
+            .setTitle(`The Season ${season} ${tier.substring(0, 1).toUpperCase() + tier.substring(1).toLowerCase()} draft has now ${draftMode ? "ended" : "started"}!`)
             .setTimestamp();
 
         draftTier = draftMode ? "" : tier;
@@ -307,21 +306,24 @@ const COMMANDS = {
     },
 
     "draft": async (message, args) => {
-        if (!args[0] || !args[1] || !args[2]) {
-            await message.channel.send("Missing arguments. Proper syntax is: ?draft [@player] [abbreviation] [pick]");
+        if (!args[0] || !args[1] || !args[2] || !args[3]) {
+            await message.channel.send("Missing arguments. Proper syntax is: ?draft [@player] [abbreviation] [round] [pick]");
             return false;
         }
         let franchiseAbbrev = args[1];
-        let pick = args[2];
+        let pick = args[3];
+        let round = args[2];
         let targetRole = message.guild.roles.cache.find(r => r.id === franchises[franchiseAbbrev].role_id);
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = message.guild.members.cache.get(targetId);
         let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
+        let keeper = false;
 
         await targetMember.guild.fetch();
+        keeper = targetMember.roles.cache.some(r => r.id === targetRole.id); //has to be done after the fetch
 
         if (!(targetMember.roles.cache.some(r => (r.name === settings.roles.player_retireable.de_role_name) ||
-            (r.name === settings.roles.player_retireable.fa_role_name)))) {
+            (r.name === settings.roles.player_retireable.fa_role_name)) && !keeper)) {
             await message.channel.send("Player is not draft eligible or is missing the required roles.");
             return false;
         }
@@ -337,7 +339,7 @@ const COMMANDS = {
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name));
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
         await targetMember.setNickname(`${franchiseAbbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
-        postTransaction("DRAFT", `With pick number ${pick} in  the draft, the ${franchises[franchiseAbbrev].teams[draftTier]} select <@${targetMember.user.id}>`,
+        postDraftTransaction(round, pick, `The ${franchises[franchiseAbbrev].teams[draftTier]} ${keeper ? "keep" : "select"} <@${targetMember.user.id}>`,
             franchises[franchiseAbbrev], draftTier, transactionChannel);
         return true;
 
@@ -380,6 +382,28 @@ async function postTransaction(type, contents, franchise, tier, channel, tradeCo
                 { name: 'Franchise', value: `${franchise.name}`, inline: true },
                 { name: 'GM', value: `<@${franchise.gm_id}>`, inline: true })
         }
+
+        await channel.send({ embeds: [transaction_embed] });
+    } catch (error) {
+        console.error(`An error occurred while trying to post a transaction:\n\n ${error}`)
+        throw error;
+    }
+
+}
+
+async function postDraftTransaction(round, pick, contents, franchise, tier, channel) {
+    try {
+        const transaction_embed = new MessageEmbed()
+            .setColor(tier ? colors.tier[tier] : "#808080")
+            .setTitle(`Round: ${round} | Pick: ${pick} | Tier: ${tier.substring(0, 1).toUpperCase() + tier.substring(1).toLowerCase()}`)
+            .setDescription(contents)
+            .setThumbnail(franchise ? franchise.image : "")
+            .setTimestamp();
+        transaction_embed.addFields(
+            { name: 'Team', value: `${franchise.teams[tier]}`, inline: true },
+            { name: 'Franchise', value: `${franchise.name}`, inline: true },
+            { name: 'GM', value: `<@${franchise.gm_id}>`, inline: true })
+
 
         await channel.send({ embeds: [transaction_embed] });
     } catch (error) {
