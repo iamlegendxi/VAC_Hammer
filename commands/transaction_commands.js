@@ -8,6 +8,16 @@ module.exports = {
 
     execute: async function execute(message, args) {
         var cmd_type = args[0].replace("?", "");
+        if (draftMode) {
+            if (!(cmd_type.toLowerCase().includes("draft"))) {
+                await message.channel.send("Draft mode is enabled, so only draft commands are allowed. Do ?toggleDraftMode [season] [tier] to disable this.");
+                return false;
+            }
+        }
+        else if (cmd_type.toLowerCase().includes("draft")) {
+            await message.channel.send("Draft mode is not enabled.");
+            return false;
+        }
         try {
             return await COMMANDS[cmd_type](message, args.slice(1));
         } catch (error) {
@@ -23,6 +33,8 @@ module.exports = {
 
 //key should be a user id as a string, and value should be an array with the franchise json and the GuildMember object
 var subsList = {};
+var draftMode = false;
+var draftTier = "";
 
 //default: 59 59 23 * * ${settings.match_days.day1},${settings.match_days.day2}
 var clearSubs = new cron.CronJob(`59 59 23 * * ${settings.match_days.day1},${settings.match_days.day2}`, async () => {
@@ -52,7 +64,7 @@ const COMMANDS = {
         let targetMember = await message.guild.members.cache.get(targetId);
         let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
         if (desiredNickname.length > 28) {
-            message.channel.send("Error: desired nickname is too long.")
+            await message.channel.send("Error: desired nickname is too long.")
             return false;
         }
         let deRole = await message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name);
@@ -60,14 +72,13 @@ const COMMANDS = {
         await (targetMember.guild.fetch());
 
         if (targetId === settings.server_owner_id) {
-            message.channel.send("Cannot modify nickname for this user.")
+            await message.channel.send("Cannot modify nickname for this user.")
             return false;
         }
 
         if (targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.de_role_name) ||
             targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name)) {
-            message.channel.send("Member is already eligible to be drafted.")
-            message.react("❌");
+            await message.channel.send("Member is already eligible to be drafted.")
             return false;
         }
 
@@ -107,7 +118,7 @@ const COMMANDS = {
 
     "sign": async (message, args) => {
         if (!args[1] && !args[2]) {
-            message.channel.send("Missing arguments. Proper syntax is: ?sign [@player] [abbreviation] [tier]");
+            await message.channel.send("Missing arguments. Proper syntax is: ?sign [@player] [abbreviation] [tier]");
             return false;
         }
         let abbrev = args[1].toLowerCase(); let tier = args[2].toLowerCase();
@@ -127,20 +138,20 @@ const COMMANDS = {
             for (var x of Object.keys(franchises)) {
                 let f = await message.guild.roles.cache.find(r => r.id === franchises[x].role_id);
                 if (targetMember.roles.cache.some(r => r.id === f.id)) {
-                    message.channel.send("User is already signed to a franchise.")
+                    await message.channel.send("User is already signed to a franchise.")
                     return false;
                 }
             }
 
             if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))) {
-                message.channel.send("User is not a free agent.")
+                await message.channel.send("User is not a free agent.")
                 return false;
             }
 
         }
 
         if (franchises[abbrev].teams[tier] == "") {
-            message.channel.send("This franchise does not have a team configured for the specified tier.");
+            await message.channel.send("This franchise does not have a team configured for the specified tier.");
             return false;
         }
 
@@ -163,7 +174,7 @@ const COMMANDS = {
 
     "cut": async (message, args) => {
         if (!args[1] && !args[2]) {
-            message.channel.send("Missing arguments. Proper syntax is: ?cut [@player] [abbreviation] [tier]");
+            await message.channel.send("Missing arguments. Proper syntax is: ?cut [@player] [abbreviation] [tier]");
             return false;
         }
         let abbrev = args[1].toLowerCase(); let tier = args[2].toLowerCase();
@@ -179,7 +190,7 @@ const COMMANDS = {
         await targetMember.guild.fetch();
 
         if (!(targetMember.roles.cache.some(r => r.name === franchises[abbrev].name))) {
-            message.channel.send("User is not a member of that franchise, check your command syntax and try again.");
+            await message.channel.send("User is not a member of that franchise, check your command syntax and try again.");
             return false;
         }
 
@@ -196,7 +207,7 @@ const COMMANDS = {
 
     "sub": async (message, args) => {
         if (!args[1] && !args[2]) {
-            message.channel.send("Missing arguments. Proper syntax is: ?sub [@player] [abbreviation] [tier]");
+            await message.channel.send("Missing arguments. Proper syntax is: ?sub [@player] [abbreviation] [tier]");
             return false;
         }
         let abbrev = args[1].toLowerCase(); let tier = args[2].toLowerCase();
@@ -208,7 +219,7 @@ const COMMANDS = {
         await targetMember.guild.fetch();
 
         if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))) {
-            message.channel.send("User is not registered for the league, or is missing the Free Agent role.");
+            await message.channel.send("User is not registered for the league, or is missing the Free Agent role.");
             return false;
         }
 
@@ -216,13 +227,13 @@ const COMMANDS = {
         var today = new Date();
 
         if (!(today.getDay() == settings.match_days.day1 || today.getDay() == settings.match_days.day2)) {
-            message.channel.send("Sub transactions must be completed on a match day.");
+            await message.channel.send("Sub transactions must be completed on a match day.");
             return false;
         }
 
         for (var x of Object.keys(franchises)) {
             if (targetMember.roles.cache.some(r => r.id === franchises[x].role_id)) {
-                message.channel.send(`Player is already signed to the ${franchises[x].name}`);
+                await message.channel.send(`Player is already signed to the ${franchises[x].name}`);
                 return false;
             }
         }
@@ -249,14 +260,14 @@ const COMMANDS = {
         postTransaction("UNSUB", `<@${targetMember.user.id}> has finished their time as a substitute.`,
             subsList[targetId][1], null, targetMember.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
 
-            return true;
+        return true;
     },
 
     "showsubs": async (message, args) => {
 
         const subsEmbed = new MessageEmbed()
-        .setColor("#611010")
-        .setTitle("List of active substitutes");
+            .setColor("#611010")
+            .setTitle("List of active substitutes");
         var msg = "```";
 
         for (var s in subsList) {
@@ -269,6 +280,68 @@ const COMMANDS = {
 
         return true;
     },
+
+    "toggleDraftMode": async (message, args) => {
+
+        console.log(draftTier);
+        if (!args[0] || !args[1]) {
+            await message.channel.send("Missing arguments. Proper syntax is: ?toggleDraftMode [season] [tier]");
+            return false;
+        }
+        else if (draftTier != "" && args[1] != draftTier) {
+            await message.channel.send(`Cannot begin the ${args[1]} draft without first ending the ${draftTier} draft.`);
+            return false;
+        }
+        let season = args[0];
+        let tier = args[1];
+        let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
+        const draftEmbed = new MessageEmbed()
+            .setColor(colors[tier])
+            .setTitle(`The Season ${season} ${tier} draft has now ${draftMode ? "ended" : "started"}!`)
+            .setTimestamp();
+
+        draftTier = draftMode ? "" : tier;
+        draftMode = !draftMode;
+        await transactionChannel.send({ embeds: [draftEmbed] });
+        return true;
+    },
+
+    "draft": async (message, args) => {
+        if (!args[0] || !args[1] || !args[2]) {
+            await message.channel.send("Missing arguments. Proper syntax is: ?draft [@player] [abbreviation] [pick]");
+            return false;
+        }
+        let franchiseAbbrev = args[1];
+        let pick = args[2];
+        let targetRole = message.guild.roles.cache.find(r => r.id === franchises[franchiseAbbrev].role_id);
+        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetMember = message.guild.members.cache.get(targetId);
+        let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
+
+        await targetMember.guild.fetch();
+
+        if (!(targetMember.roles.cache.some(r => (r.name === settings.roles.player_retireable.de_role_name) ||
+            (r.name === settings.roles.player_retireable.fa_role_name)))) {
+            await message.channel.send("Player is not draft eligible or is missing the required roles.");
+            return false;
+        }
+
+        if (!targetRole) {
+            message.channel.send("No such franchise or franchise role exists.");
+            return false;
+        }
+
+        //player can be drafted if this point is reached
+
+        await targetMember.roles.add(targetRole);
+        await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name));
+        await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
+        await targetMember.setNickname(`${franchiseAbbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
+        postTransaction("DRAFT", `With pick number ${pick} in  the draft, the ${franchises[franchiseAbbrev].teams[draftTier]} select <@${targetMember.user.id}>`,
+            franchises[franchiseAbbrev], draftTier, transactionChannel);
+        return true;
+
+    }
 
 }
 

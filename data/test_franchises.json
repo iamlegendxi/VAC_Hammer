@@ -10,13 +10,13 @@
         }
     },
 
-    "wtf": {
+    "ato": {
         "role_id": "963905820351946764",
         "gm_id": "174341575000850432",
-        "name": "Stinky Poo Poo Eaters",
-        "image": "",
+        "name": "Alpha Tau Omega",
+        "image": "https://external-preview.redd.it/TPZQX-631jGoaBEkyPTBkMr2u5vqtCDqQG-UjX3UNzw.jpg?auto=webp&s=bfd88bc842de20f9404e87b8a53f669dc667b5b6",
         "teams": {
-            "elite": "Shit Flingers",
+            "elite": "Tequila Shots",
             "challenger": ""
         }
     },
