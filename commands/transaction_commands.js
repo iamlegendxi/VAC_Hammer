@@ -14,7 +14,7 @@ module.exports = {
                 return false;
             }
         }
-        else if (cmd_type.toLowerCase().includes("draft")) {
+        else if (cmd_type.toLowerCase().includes("draft") && !draftMode) {
             await message.channel.send("Draft mode is not enabled.");
             return false;
         }
