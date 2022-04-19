@@ -48,7 +48,7 @@ var clearSubs = new cron.CronJob(`59 59 23 * * ${settings.match_days.day1},${set
 
         await targetUser.roles.remove(targetUser.roles.cache.find(r => r.id === subsList[s][1].role_id));
         console.log(`Automatically unsubbed player: ${s}`);
-        postTransaction("UNSUB", `<@${targetUser.user.id}> has finished their time as a substitute.`,
+        await postTransaction("UNSUB", `<@${targetUser.user.id}> has finished their time as a substitute.`,
             subsList[s][1], null, targetUser.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
     }
 
@@ -93,13 +93,14 @@ const COMMANDS = {
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = message.guild.members.cache.get(targetId);
         if (!secondaryArgs) secondaryArgs = "-player -gm"; //defaults to both
+        let removeFranchiseRoles = secondaryArgs.includes("-player") && secondaryArgs.includes("-gm");
 
         if (secondaryArgs.includes("-player")) {
-            await removeRoles(player_roles, message, targetMember)
+            await removeRoles(player_roles, targetMember, removeFranchiseRoles)
         }
 
         if (secondaryArgs.includes("-gm")) {
-            await removeRoles(gm_roles, message, targetMember);
+            await removeRoles(gm_roles, targetMember, removeFranchiseRoles);
         }
 
         await (targetMember.guild.fetch());
@@ -136,7 +137,7 @@ const COMMANDS = {
         if (!(targetMember.user.id != franchises[abbrev].gm_id)) { //GMs can never be free agents and will always be signed to a franchise
 
             for (var x of Object.keys(franchises)) {
-                let f = await message.guild.roles.cache.find(r => r.id === franchises[x].role_id);
+                let f = message.guild.roles.cache.find(r => r.id === franchises[x].role_id);
                 if (targetMember.roles.cache.some(r => r.id === f.id)) {
                     await message.channel.send("User is already signed to a franchise.")
                     return false;
@@ -257,7 +258,7 @@ const COMMANDS = {
         await targetMember.roles.remove(targetMember.roles.cache.find(r => r.id === subsList[targetId][1].role_id));
         delete subsList[targetMember.user.id];
         console.log(`Manually unsubbed player: ${targetMember.user.id}`);
-        postTransaction("UNSUB", `<@${targetMember.user.id}> has finished their time as a substitute.`,
+        await postTransaction("UNSUB", `<@${targetMember.user.id}> has finished their time as a substitute.`,
             subsList[targetId][1], null, targetMember.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
 
         return true;
@@ -339,26 +340,76 @@ const COMMANDS = {
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name));
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
         await targetMember.setNickname(`${franchiseAbbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
-        postDraftTransaction(round, pick, `The ${franchises[franchiseAbbrev].teams[draftTier]} ${keeper ? "keep" : "select"} <@${targetMember.user.id}>`,
+        await postDraftTransaction(round, pick, `The ${franchises[franchiseAbbrev].teams[draftTier]} ${keeper ? "keep" : "select"} <@${targetMember.user.id}>`,
             franchises[franchiseAbbrev], draftTier, transactionChannel);
         return true;
 
+    },
+
+    "trade": async (message, args) => {
+        let tradeContents = args.join(' ').split("for");
+        let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
+        let tradeMessageContents = {};
+        let transactionContents = "";
+
+        if (tradeContents.length <= 1) {
+            await message.channel.send("Missing arguments. Proper syntax is: ?trade [abbreviation] [tradeContents]" +
+                " for [abbreviation] [tradeContents]\n(did you separate the trade contents with a comma?)");
+            return false;
+        }
+        for (let i = 0; i < tradeContents.length; i++) {
+            let contents = tradeContents[i].trim().split(' ').slice(1).join(' ').split(',');
+            let franchise = franchises[tradeContents[i].trim().split(' ').slice(0,1)];
+
+            if (!franchise) {
+                await message.channel.send(`One or more of the provided franchises does not exist.`);
+                return false;
+            }
+
+            tradeMessageContents[`${franchise.name} will receive: `] = "";
+            
+            for (let j = 0; j < contents.length; j++) {
+                let potentialUserId = contents[j].substring(contents[j].indexOf("@") + 1, contents[j].indexOf(">")).replace("!", "");
+                let potentialUser = message.guild.members.cache.get(potentialUserId);
+                if (potentialUser) {
+                    //player is involved in the trade, we need to remove old roles and add new ones
+
+                    await potentialUser.guild.fetch();
+
+                    await removeRoles({}, potentialUser, true);
+                    await potentialUser.roles.add(franchise.role_id);
+                    await potentialUser.setNickname(`${tradeContents[i].trim().split(' ').slice(0,1)[0].toUpperCase()} | ${potentialUser.nickname.split('|')[1].trim()}`);
+                    tradeMessageContents[`${franchise.name} will receive: `] += `<@${potentialUser.user.id}>\n`;
+                }
+                else {
+                    tradeMessageContents[`${franchise.name} will receive: `] += `${contents[j]}\n`;
+                }
+            }
+            transactionContents = transactionContents + `${franchise.name} ${i == tradeContents.length-1 ? " " : "and "}`
+        }
+
+        transactionContents = transactionContents + "have agreed to a trade.\n";
+        await postTransaction("TRADE", transactionContents, null, null, transactionChannel, tradeMessageContents);
+
+        return true;
     }
 
 }
 
-async function removeRoles(jsonObj, message, targetMember) {
+async function removeRoles(jsonObj, targetMember, removeFranchiseRoles) {
     for (var x of Object.keys(jsonObj)) {
         let targetRole = targetMember.roles.cache.find(r => r.name === jsonObj[x]);
         if (!targetRole) continue;
         let removed = await targetMember.roles.remove(targetRole);
         if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
     }
-    for (var x of Object.keys(franchises)) {
-        let targetRole = targetMember.roles.cache.find(r => r.name === franchises[x].name);
-        if (!targetRole) continue;
-        let removed = await targetMember.roles.remove(targetRole);
-        if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
+    if (removeFranchiseRoles) {
+        for (var x of Object.keys(franchises)) {
+            let targetRole = targetMember.roles.cache.find(r => r.name === franchises[x].name);
+            if (!targetRole) continue;
+            let removed = await targetMember.roles.remove(targetRole);
+            if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
+        }
     }
     //todo: assign former gm/player
 }
@@ -372,8 +423,10 @@ async function postTransaction(type, contents, franchise, tier, channel, tradeCo
             .setThumbnail(franchise ? franchise.image : "")
             .setTimestamp()
             .setFooter({ text: `Type: ${type}` });
-        if (tradeContents != {} && type == "TRADE") {
-            //post trade contents
+        if (tradeContents != {} && type.toUpperCase() == "TRADE") {
+            for (var x of Object.keys(tradeContents)) {
+                transaction_embed.addField(x, tradeContents[x], true);
+            }
         }
 
         else if (tier && franchise) {
