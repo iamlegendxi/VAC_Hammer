@@ -1,6 +1,7 @@
-var settings = require('./bot_settings');
+const settings = require('./bot_settings');
 const private_settings = require('./settings');
 const Transactions = require('./commands/transaction_commands');
+const HelpCommands = require('./commands/help_commands');
 
 
 module.exports = {
@@ -38,7 +39,11 @@ module.exports = {
                 return false;
             }
         }
-    },
+
+        else if (command == "help") {
+            return await HelpCommands.displayHelpMenu(message, args);
+        }
+    }
 
     // parseSlashCommand: async function parseSlashCommand(interaction, asInteraction) {
     //     var msg = interaction.

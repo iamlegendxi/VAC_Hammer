@@ -131,9 +131,9 @@ const COMMANDS = {
         let targetMember = message.guild.members.cache.get(targetId);
         let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
 
-        // if (!(targetMember.nickname) || !(targetMember.nickname.includes('|'))) { //target isn't in the league?
-        //     throw "User does not follow the proper nickname syntax and is trying to be signed. Check if they have retired?";
-        // }
+        if (!(targetMember.nickname) || !(targetMember.nickname.includes('|'))) { //target isn't in the league?
+            throw "User does not follow the proper nickname syntax and is trying to be signed. Check if they have retired?";
+        }
 
         await (targetMember.guild.fetch());
 
@@ -169,9 +169,9 @@ const COMMANDS = {
         //transactionChannel.send(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`);
         await postTransaction("SIGN", `<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
 
-        let desiredName = (targetMember.nickname && targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
-        await targetMember.setNickname(`${abbrev.toUpperCase()} | ${desiredName}`);
-        // await targetMember.setNickname(`${abbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
+        // let desiredName = (targetMember.nickname && targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
+        // await targetMember.setNickname(`${abbrev.toUpperCase()} | ${desiredName}`);
+        await targetMember.setNickname(`${abbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
         return true;
 
     },
@@ -198,8 +198,10 @@ const COMMANDS = {
             return false;
         }
 
-        await targetMember.roles.remove(targetMember.roles.cache.find(r => r.name === franchises[abbrev].name));
-        await targetMember.roles.add(faRole);
+        if (!(targetMember.user.id == franchises[abbrev].gm_id)) {
+            await targetMember.roles.remove(targetMember.roles.cache.find(r => r.name === franchises[abbrev].name));
+            await targetMember.roles.add(faRole);
+        }
         console.log(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
         //transactionChannel.send(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
         await postTransaction("CUT", `<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
@@ -362,7 +364,7 @@ const COMMANDS = {
         }
         for (let i = 0; i < tradeContents.length; i++) {
             let contents = tradeContents[i].trim().split(' ').slice(1).join(' ').split(',');
-            let franchise = franchises[tradeContents[i].trim().split(' ').slice(0,1)];
+            let franchise = franchises[tradeContents[i].trim().split(' ').slice(0, 1)];
 
             if (!franchise) {
                 await message.channel.send(`One or more of the provided franchises does not exist.`);
@@ -370,7 +372,7 @@ const COMMANDS = {
             }
 
             tradeMessageContents[`${franchise.name} will receive: `] = "";
-            
+
             for (let j = 0; j < contents.length; j++) {
                 let potentialUserId = contents[j].substring(contents[j].indexOf("@") + 1, contents[j].indexOf(">")).replace("!", "");
                 let potentialUser = message.guild.members.cache.get(potentialUserId);
@@ -381,14 +383,14 @@ const COMMANDS = {
 
                     await removeRoles({}, potentialUser, true);
                     await potentialUser.roles.add(franchise.role_id);
-                    await potentialUser.setNickname(`${tradeContents[i].trim().split(' ').slice(0,1)[0].toUpperCase()} | ${potentialUser.nickname.split('|')[1].trim()}`);
+                    await potentialUser.setNickname(`${tradeContents[i].trim().split(' ').slice(0, 1)[0].toUpperCase()} | ${potentialUser.nickname.split('|')[1].trim()}`);
                     tradeMessageContents[`${franchise.name} will receive: `] += `<@${potentialUser.user.id}>\n`;
                 }
                 else {
                     tradeMessageContents[`${franchise.name} will receive: `] += `${contents[j]}\n`;
                 }
             }
-            transactionContents = transactionContents + `${franchise.name} ${i == tradeContents.length-1 ? " " : "and "}`
+            transactionContents = transactionContents + `${franchise.name} ${i == tradeContents.length - 1 ? " " : "and "}`
         }
 
         transactionContents = transactionContents + "have agreed to a trade.\n";

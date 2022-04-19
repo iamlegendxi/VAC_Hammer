@@ -2,9 +2,10 @@
     "prefix": "?",
     "bot_owner_id": "205364070566592513",
     "server_owner_id": "845158362961674250",
+    "vdc_icon_url": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
     "channels": {
         "announcement_channel_id": "",
-        "admin_channel_id": "",
+        "admin_commands_channel_id": "",
         "bot_commands_channel_id": "",
         "transaction_channel_id": "963553611051319316"
     },
@@ -22,7 +23,7 @@
         }
     },
     "match_days": {
-        "day1": 4,
+        "day1": 5,
         "day2": 6
     }
 }
