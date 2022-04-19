@@ -1,7 +1,7 @@
-var settings = require('../bot_settings');
-var franchises = require('../data/test_franchises');
-var colors = require('../data/colors');
-var cron = require('cron');
+const settings = require('../bot_settings');
+const franchises = require('../data/test_franchises');
+const colors = require('../data/colors');
+const cron = require('cron');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -59,7 +59,10 @@ var clearSubs = new cron.CronJob(`59 59 23 * * ${settings.match_days.day1},${set
 const COMMANDS = {
 
     "makeDE": async (message, args) => {
-        if (!args[0]) return false;
+        if (!args[0]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?makeDE [@player] [nickname?]");
+            return false;
+        };
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = await message.guild.members.cache.get(targetId);
         let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
@@ -129,7 +132,7 @@ const COMMANDS = {
         let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
 
         // if (!(targetMember.nickname) || !(targetMember.nickname.includes('|'))) { //target isn't in the league?
-        //     throw "User should have a nickname and is trying to be cut.";
+        //     throw "User does not follow the proper nickname syntax and is trying to be signed. Check if they have retired?";
         // }
 
         await (targetMember.guild.fetch());
@@ -219,7 +222,7 @@ const COMMANDS = {
 
         await targetMember.guild.fetch();
 
-        if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))) {
+        if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name || r.name === settings.roles.player_retireable.permfa_role_name))) {
             await message.channel.send("User is not registered for the league, or is missing the Free Agent role.");
             return false;
         }
@@ -392,6 +395,38 @@ const COMMANDS = {
         await postTransaction("TRADE", transactionContents, null, null, transactionChannel, tradeMessageContents);
 
         return true;
+    },
+
+    "movePermFA": async (message, args) => {
+        if (!args[0]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?makePermFA [@player] [nickname?]");
+            return false;
+        }
+        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetMember = await message.guild.members.cache.get(targetId);
+        let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
+        let targetRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.permfa_role_name);
+
+        await targetMember.guild.fetch();
+
+        //never make a gm a permfa
+        if (targetMember.roles.cache.some(r => r.name === settings.roles.gm_retireable.gm_role_name)) {
+            await message.channel.send("Cannot move a general manager to permanent free agency.");
+            return false;
+        }
+
+        //if the user is not a perm fa already, make them one
+        if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.permfa_role_name))) {
+            await removeRoles(settings.roles.player_retireable, targetMember, true);
+            await targetMember.roles.add(targetRole);
+            await targetMember.setNickname(`FA | ${desiredNickname}`);
+            return true;
+        }
+        else { //the user is a permfa who is being promoted to normal free agency
+            await targetMember.roles.remove(targetRole);
+            await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
+            return true;
+        }
     }
 
 }
