@@ -1,5 +1,5 @@
 const settings = require('../bot_settings');
-const franchises = require('../data/test_franchises');
+const franchises = require('../data/franchises');
 const colors = require('../data/colors');
 const cron = require('cron');
 const { MessageEmbed } = require('discord.js');

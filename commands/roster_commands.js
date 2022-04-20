@@ -1,8 +1,7 @@
 const settings = require('../bot_settings');
-const franchises = require('../data/test_franchises');
+const franchises = require('../data/franchises');
 const colors = require('../data/colors');
 const { MessageEmbed } = require('discord.js');
-const { exists } = require('./transaction_commands');
 
 module.exports = {
     search: async function search(message, args) {

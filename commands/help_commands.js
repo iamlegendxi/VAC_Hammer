@@ -5,12 +5,12 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 
     displayHelpMenu: async function displayHelpMenu(message, args) {
-        let helpTarget = args[1].toLowerCase();
         if (!args[1]) {
             await showDefaultHelpMenu(message);
             return true;
         }
-        else if (NON_ADMIN_HELP[helpTarget]) {
+        let helpTarget = args[1].toLowerCase();
+        if (NON_ADMIN_HELP[helpTarget]) {
             await message.channel.send({ embeds: [NON_ADMIN_HELP[helpTarget]] });
             return true;
         }
