@@ -2,6 +2,7 @@ const settings = require('./bot_settings');
 const private_settings = require('./settings');
 const Transactions = require('./commands/transaction_commands');
 const HelpCommands = require('./commands/help_commands');
+const Rosters = require('./commands/roster_commands');
 
 
 module.exports = {
@@ -42,6 +43,11 @@ module.exports = {
 
         else if (command == "help") {
             return await HelpCommands.displayHelpMenu(message, args);
+        }
+
+        else if (Rosters.exists(command)) {
+            await (message.guild.fetch());
+            return await Rosters.search(message, args);
         }
     }
 

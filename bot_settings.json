@@ -20,6 +20,10 @@
             "fa_role_name": "Free Agent",
             "captain_role_name": "Captain",
             "permfa_role_name": "Permanent Free Agent"
+        },
+        "tier_retireable": {
+            "elite": "Elite",
+            "challenger": "Challenger"
         }
     },
     "match_days": {

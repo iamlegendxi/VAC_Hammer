@@ -99,7 +99,8 @@ const COMMANDS = {
         let removeFranchiseRoles = secondaryArgs.includes("-player") && secondaryArgs.includes("-gm");
 
         if (secondaryArgs.includes("-player")) {
-            await removeRoles(player_roles, targetMember, removeFranchiseRoles)
+            await removeRoles(player_roles, targetMember, removeFranchiseRoles);
+            await removeRoles(settings.roles.tier_retireable, targetMember, false);
         }
 
         if (secondaryArgs.includes("-gm")) {
@@ -162,6 +163,7 @@ const COMMANDS = {
         //if it reaches this point, the user should be available to sign
 
         await targetMember.roles.add(targetRole);
+        await targetMember.roles.add(message.guild.roles.cache.find(r => r.name.toLowerCase() === tier))
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
 
         //tier should already be assigned to a player
@@ -342,6 +344,7 @@ const COMMANDS = {
         //player can be drafted if this point is reached
 
         await targetMember.roles.add(targetRole);
+        await targetMember.roles.add(message.guild.roles.cache.find(r => r.name.toLowerCase() === draftTier.toLowerCase()));
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name));
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
         await targetMember.setNickname(`${franchiseAbbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);

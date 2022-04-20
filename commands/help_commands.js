@@ -1,5 +1,4 @@
 const settings = require('../bot_settings');
-const franchises = require('../data/test_franchises');
 const colors = require('../data/colors');
 const { MessageEmbed } = require('discord.js');
 
@@ -16,6 +15,7 @@ module.exports = {
             return true;
         }
         else if (ADMIN_HELP[helpTarget]) {
+            await message.guild.fetch();
             if (!(message.member.roles.cache.some(r => r.name === "Admin"))) {
                 await message.channel.send("You must be an admin to view the admin help menu.");
                 return false;
@@ -35,7 +35,31 @@ const NON_ADMIN_HELP = {
         .setDescription("Says hi to the bot, causing them to say hi back :)")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usage:", "``?hivac``", false)
-        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+    "roster": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("roster [team]")
+        .setDescription("Searches for a team, then displays a roster for that team.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usage:", "``?roster hitmen``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+    "franchises": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("franchises")
+        .setDescription("Displays a list of all active franchises in the server, alongside their respective abbreviations.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usage:", "``?franchises``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+        
+    "teams": new MessageEmbed()
+    .setColor(colors.vdc_default)
+    .setTitle("teams [franchise]")
+    .setDescription("Displays all teams and their respective tiers within a franchise.")
+    .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+    .addField("Example Usage:", "``?teams hg``", false)
+    .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
 }
 
 const ADMIN_HELP = {
@@ -114,8 +138,8 @@ const ADMIN_HELP = {
     "toggledraftmode": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("toggleDraftMode [season] [tier]")
-        .setDescription("Toggles draft mode within the server. Players can be drafted with ``?draft`` and other transaction commands will not work."+
-        " Also, other draft modes cannot be toggled while one is still enabled.")
+        .setDescription("Toggles draft mode within the server. Players can be drafted with ``?draft`` and other transaction commands will not work." +
+            " Also, other draft modes cannot be toggled while one is still enabled.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usages:", "``?showsubs 1 elite``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
@@ -132,8 +156,8 @@ const ADMIN_HELP = {
     "trade": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("trade [franchise] [receives] for [franchise] [receives]")
-        .setDescription("Posts a trade between two franchises. Franchise must be the franchise's abbreviation (e.g. HG, OS, etc)."+
-        " **__TRADE CONTENTS MUST BE SEPARATED BY A COMMA__.**")
+        .setDescription("Posts a trade between two franchises. Franchise must be the franchise's abbreviation (e.g. HG, OS, etc)." +
+            " **__TRADE CONTENTS MUST BE SEPARATED BY A COMMA__.**")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usages:", "``?trade os @Legend#4270 for hg @Spence#6132, Season 2 2nd Round Pick, Season 1 1st Round Pick (4)``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention.", iconURL: settings.vdc_icon_url }),
@@ -141,8 +165,8 @@ const ADMIN_HELP = {
     "movepermfa": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("movePermFA [@user] [nickname?]")
-        .setDescription("Moves a player to permanent free agency with the specified nickname (if provided)."+
-        " If the user is a permanent free agent already, they are promoted to normal free agency.")
+        .setDescription("Moves a player to permanent free agency with the specified nickname (if provided)." +
+            " If the user is a permanent free agent already, they are promoted to normal free agency.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usages:", "``?movePermFA @Legend#4270\n?movePermFA @Legend#4270 Badmin``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
