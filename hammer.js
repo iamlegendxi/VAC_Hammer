@@ -1,11 +1,13 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const bot = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS]
 });
-var settings = require('./bot_settings');
+const settings = require('./bot_settings');
 const CommandParser = require("./commandparser");
 const private_settings = require('./settings');
+const colors = require("./data/colors");
+
 
 var welcome_message = "";
 
@@ -21,11 +23,36 @@ var welcome_message = "";
 // })
 
 bot.on("guildMemberAdd", async guildMember => {
-    let channel = guildMember.guild.channels.cache.find(c => c.id === settings.channels.welcome_channel_id);
-    channel.send(`${guildMember.user}, welcome to Valorant Draft Circuit! ${welcome_message}`);
-    let spec_role = guildMember.guild.roles.cache.find(r => r.name === settings.roles.default_role_name)
-    if (!spec_role) console.log(`Error occurred while trying to give player: ${guildMember.nickname} the default role`)
-    guildMember.roles.add(spec_role);
+    // let channel = guildMember.guild.channels.cache.find(c => c.id === settings.channels.welcome_channel_id);
+    // channel.send(`${guildMember.user}, welcome to Valorant Draft Circuit! ${welcome_message}`);
+    // let spec_role = guildMember.guild.roles.cache.find(r => r.name === settings.roles.default_role_name)
+    // if (!spec_role) console.log(`Error occurred while trying to give player: ${guildMember.nickname} the default role`)
+    // guildMember.roles.add(spec_role);
+
+    let logChannel = guildMember.guild.channels.cache.find(r => r.id === settings.channels.log_channel_id);
+    
+    await logChannel.send({
+        embeds: [new MessageEmbed()
+            .setAuthor({ name: `${guildMember.user.username} (${guildMember.user.username}) has joined the server` })
+            .setColor(colors.vdc_default)
+            .setDescription(`<@${guildMember.user.id}> joined the server, bringing the member count to ${guildMember.guild.memberCount}`)
+            .setTimestamp()
+        ]
+    })
+
+})
+
+bot.on("guildMemberRemove", async guildMember => {
+    let logChannel = guildMember.guild.channels.cache.find(r => r.id === settings.channels.log_channel_id);
+    
+    await logChannel.send({
+        embeds: [new MessageEmbed()
+            .setAuthor({ name: `${guildMember.user.username} (${guildMember.user.username}) has left the server` })
+            .setColor(colors.vdc_default)
+            .setDescription(`<@${guildMember.user.id}> left the server, bringing the member count to ${guildMember.guild.memberCount}`)
+            .setTimestamp()
+        ]
+    })
 })
 
 bot.on("messageCreate", async message => {
@@ -33,8 +60,9 @@ bot.on("messageCreate", async message => {
     try {
         if (message.content.startsWith(settings.prefix)) {
             console.log(`Command sent to bot: ${message.content} by user: ${message.author}`);
-            let cmd = await CommandParser.parseCommand(message, bot, interaction);
-            if (CommandParser.exists(message.split(' ').replace("?",""))) (cmd ? message.react("✅") : message.react("❌"));
+            //let cmd = await CommandParser.parseCommand(message, bot, interaction);
+            //if (message == "?") return;
+            //if (CommandParser.exists(message.content.toLowerCase().split(' ')[0].replace("?", ""))) (cmd ? message.react("✅") : message.react("❌"));
         }
     } catch (error) {
         console.log(error);

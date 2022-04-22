@@ -23,13 +23,13 @@
         
     },
 
-    "gld": {
+    "sha": {
         "role_id": "966904182223290488",
         "gm_id": "166361318293635072",
-        "name": "Gladiators",
+        "name": "Shark Tank",
         "image": "https://cdn.discordapp.com/attachments/963476456409825370/966905175518367804/GLD_LOGO_TRANSPARENT.png",
         "teams": {
-            "contender": "Spartans",
+            "contender": "Threshers",
             "challenger": ""
         }
 
