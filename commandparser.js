@@ -49,6 +49,22 @@ module.exports = {
             await (message.guild.fetch());
             return await Rosters.search(message, args);
         }
+    },
+
+    exists: async function exists(command) {
+        
+        if ("hivacreboothelp".includes(command)) {
+            return true;
+        }
+        
+        else if (Transactions.exists(command)) {
+            return true;
+        }
+
+        else if (Rosters.exists(command)) {
+            return true;
+        }
+
     }
 
     // parseSlashCommand: async function parseSlashCommand(interaction, asInteraction) {

@@ -34,7 +34,7 @@ bot.on("messageCreate", async message => {
         if (message.content.startsWith(settings.prefix)) {
             console.log(`Command sent to bot: ${message.content} by user: ${message.author}`);
             let cmd = await CommandParser.parseCommand(message, bot, interaction);
-            (cmd ? message.react("✅") : message.react("❌"));
+            if (CommandParser.exists(message.split(' ').replace("?",""))) (cmd ? message.react("✅") : message.react("❌"));
         }
     } catch (error) {
         console.log(error);
