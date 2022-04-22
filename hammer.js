@@ -1,7 +1,9 @@
 const { Client, Intents, MessageEmbed } = require('discord.js');
 const bot = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS]
+    Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
+
+    partials: ['GUILD_MEMBER']
 });
 const settings = require('./bot_settings');
 const CommandParser = require("./commandparser");
