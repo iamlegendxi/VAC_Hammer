@@ -25,11 +25,11 @@ var welcome_message = "";
 // })
 
 bot.on("guildMemberAdd", async guildMember => {
-    let channel = guildMember.guild.channels.cache.find(c => c.id === settings.channels.welcome_channel_id);
-    channel.send(`${guildMember.user}, welcome to Valorant Draft Circuit! ${welcome_message}`);
-    let spec_role = guildMember.guild.roles.cache.find(r => r.name === settings.roles.default_role_name)
-    if (!spec_role) console.log(`Error occurred while trying to give player: ${guildMember.nickname} the default role`)
-    guildMember.roles.add(spec_role);
+    // let channel = guildMember.guild.channels.cache.find(c => c.id === settings.channels.welcome_channel_id);
+    // channel.send(`${guildMember.user}, welcome to Valorant Draft Circuit! ${welcome_message}`);
+    // let spec_role = guildMember.guild.roles.cache.find(r => r.name === settings.roles.default_role_name)
+    // if (!spec_role) console.log(`Error occurred while trying to give player: ${guildMember.nickname} the default role`)
+    // guildMember.roles.add(spec_role);
 
     let logChannel = guildMember.guild.channels.cache.find(r => r.id === settings.channels.log_channel_id);
     
@@ -62,9 +62,10 @@ bot.on("messageCreate", async message => {
     try {
         if (message.content.startsWith(settings.prefix)) {
             if (message.content === "?") return;
+            let msg_check = message.content.includes(' ') ? message.content.split(' ').slice(0,1) : message.content;
             console.log(`Command sent to bot: ${message.content} by user: ${message.author}`);
             let cmd = await CommandParser.parseCommand(message, bot, interaction);
-            if (CommandParser.exists(message.content.toLowerCase().split(' ')[0].replace("?", ""))) (cmd ? message.react("✅") : message.react("❌"));
+            if (await CommandParser.exists(msg_check)) (await cmd ? message.react("✅") : await message.react("❌"));
         }
     } catch (error) {
         console.log(error);

@@ -65,6 +65,8 @@ module.exports = {
             return true;
         }
 
+        return false;
+
     }
 
     // parseSlashCommand: async function parseSlashCommand(interaction, asInteraction) {
