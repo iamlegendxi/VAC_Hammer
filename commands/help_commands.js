@@ -179,7 +179,7 @@ async function showDefaultHelpMenu(message) {
         .setDescription("To view the help menu for an individual command, type ``?help [command]`` (e.g. ``?help hivac``")
         .setTimestamp()
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-        .addField("Roster", "``Insert roster commands here``", true)
+        .addField("Roster", "``franchise\nroster\nteams``", true)
         .addField("Transaction", "``Use ?help transaction to view a list of transaction commands``", true)
         .addField("Misc.", "``hivac``")
         .setFooter({ text: "Help Menu", iconURL: settings.vdc_icon_url });
