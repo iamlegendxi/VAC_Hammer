@@ -13,17 +13,18 @@
         "default_role_name": "Viewer",
         "gm_retireable": {
             "gm_role_name": "General Manager",
-            "agm_role_name": "AGM"
+            "agm_role_name": "AGM",
+            "league_role_name": "League"
         },
         "player_retireable": {
             "de_role_name": "Draft Eligible",
             "fa_role_name": "Free Agent",
             "captain_role_name": "Captain",
-            "permfa_role_name": "Permanent Free Agent"
+            "permfa_role_name": "Permanent Free Agent",
+            "league_role_name": "League"
         },
         "tier_retireable": {
-            "elite": "Elite",
-            "challenger": "Challenger"
+            "contender": "Contender"
         }
     },
     "match_days": {

@@ -86,6 +86,7 @@ const COMMANDS = {
         }
 
         await targetMember.roles.add(deRole);
+        await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
         await targetMember.setNickname(`DE | ${desiredNickname}`);
         return true;
     },
@@ -101,9 +102,13 @@ const COMMANDS = {
         if (secondaryArgs.includes("-player")) {
             await removeRoles(player_roles, targetMember, removeFranchiseRoles);
             await removeRoles(settings.roles.tier_retireable, targetMember, false);
+            await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === "Former Player"));
         }
 
         if (secondaryArgs.includes("-gm")) {
+            if (targetMember.roles.cache.some(r => r.name === settings.roles.gm_retireable.gm_role_name)) {
+                await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === "Former GM"));
+            }
             await removeRoles(gm_roles, targetMember, removeFranchiseRoles);
         }
 
@@ -424,6 +429,7 @@ const COMMANDS = {
         if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.permfa_role_name))) {
             await removeRoles(settings.roles.player_retireable, targetMember, true);
             await targetMember.roles.add(targetRole);
+            await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
             await targetMember.setNickname(`FA | ${desiredNickname}`);
             return true;
         }

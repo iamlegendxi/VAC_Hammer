@@ -5,7 +5,7 @@
         "name": "The Automata",
         "image": "https://cdn.discordapp.com/attachments/966212617318326282/966325062607204402/AutomataLogo-01.png",
         "teams": {
-            "elite": "Swarm",
+            "contender": "Swarm",
             "challenger": ""
         }
     },
@@ -14,10 +14,52 @@
         "role_id": "966395530211127396",
         "gm_id": "205364070566592513",
         "name": "Lucky Sevens",
-        "image": "https://external-preview.redd.it/TPZQX-631jGoaBEkyPTBkMr2u5vqtCDqQG-UjX3UNzw.jpg?auto=webp&s=bfd88bc842de20f9404e87b8a53f669dc667b5b6",
+        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
-            "elite": "Royal Flush",
+            "contender": "Royal Flush",
             "challenger": ""
         }
+
+        
+    },
+
+    "gld": {
+        "role_id": "966904182223290488",
+        "gm_id": "166361318293635072",
+        "name": "Gladiators",
+        "image": "https://cdn.discordapp.com/attachments/963476456409825370/966905175518367804/GLD_LOGO_TRANSPARENT.png",
+        "teams": {
+            "contender": "Spartans",
+            "challenger": ""
+        }
+
+        
+    },
+
+    "elo": {
+        "role_id": "966904250615599163",
+        "gm_id": "845158362961674250",
+        "name": "ELO Snatchers",
+        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "teams": {
+            "contender": "Bandits",
+            "challenger": ""
+        }
+
+        
+    },
+
+    "pfc": {
+        "role_id": "966904250615599163",
+        "gm_id": "811383083873730561",
+        "name": "Playing for Candy",
+        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "teams": {
+            "contender": "Candymen",
+            "challenger": ""
+        }
+
+        
     }
+    
 }
