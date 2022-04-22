@@ -87,6 +87,7 @@ const COMMANDS = {
 
         await targetMember.roles.add(deRole);
         await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
+        await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
         await targetMember.setNickname(`DE | ${desiredNickname}`);
         return true;
     },
@@ -113,6 +114,8 @@ const COMMANDS = {
         }
 
         await (targetMember.guild.fetch());
+
+        await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
 
         //keep nickname if user is a GM, FA, or AGM
         if (!(targetMember.roles.cache.some((r) => {
@@ -430,6 +433,7 @@ const COMMANDS = {
             await removeRoles(settings.roles.player_retireable, targetMember, true);
             await targetMember.roles.add(targetRole);
             await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
+            await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
             await targetMember.setNickname(`FA | ${desiredNickname}`);
             return true;
         }

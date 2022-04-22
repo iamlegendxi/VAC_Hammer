@@ -60,6 +60,19 @@
         }
 
         
+    },
+
+    "gt": {
+        "role_id": "963905754711076906",
+        "gm_id": "226536263765721091",
+        "name": "Grass Touchers",
+        "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
+        "teams": {
+            "contender": "Sod Gods",
+            "challenger": ""
+        }
+
+        
     }
     
 }
