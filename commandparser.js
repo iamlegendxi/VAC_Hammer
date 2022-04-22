@@ -3,6 +3,7 @@ const private_settings = require('./settings');
 const Transactions = require('./commands/transaction_commands');
 const HelpCommands = require('./commands/help_commands');
 const Rosters = require('./commands/roster_commands');
+const FunCommands = require('./commands/fun_commands');
 
 
 module.exports = {
@@ -49,6 +50,11 @@ module.exports = {
             await (message.guild.fetch());
             return await Rosters.search(message, args);
         }
+
+        else if (FunCommands.exists(command)) {
+            await message.guild.fetch();
+            return await FunCommands.execute(message, args);
+        }
     },
 
     exists: async function exists(command) {
@@ -62,6 +68,10 @@ module.exports = {
         }
 
         else if (Rosters.exists(command)) {
+            return true;
+        }
+
+        else if (FunCommands.exists(command)) {
             return true;
         }
 

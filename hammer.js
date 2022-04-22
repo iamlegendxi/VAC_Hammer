@@ -11,7 +11,8 @@ const private_settings = require('./settings');
 const colors = require("./data/colors");
 
 
-var welcome_message = "";
+var welcome_message = "We are looking for players to participate in our first ever season."+
+" Join here: <https://docs.google.com/forms/d/e/1FAIpQLSeh_MMjsybMEPB-uus3QeM01Tx0cwA1815cizsYq5Ym5ScLAw/viewform?vc=0&c=0&w=1&flr=0>";
 
 // bot.on("interactionCreate", async interaction => {
 //     var asInteraction = true;
