@@ -461,7 +461,6 @@ async function removeRoles(jsonObj, targetMember, removeFranchiseRoles) {
             if (removed) console.log(`Role removed from user ${targetMember.user.id}:  ${targetRole.name} (if they had it)`)
         }
     }
-    //todo: assign former gm/player
 }
 
 async function postTransaction(type, contents, franchise, tier, channel, tradeContents = {}) {

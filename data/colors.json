@@ -1,6 +1,9 @@
 {
     "vdc_default": "#81323f",
     "tier": {
-        "contender":"#e0ae23"
+        "contender":"#e0ae23",
+        "advanced": "#056600",
+        "masters": "#8e7cc3",
+        "premier": "#b12bff"
     }
 }

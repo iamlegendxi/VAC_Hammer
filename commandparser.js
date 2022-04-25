@@ -59,7 +59,7 @@ module.exports = {
 
     exists: async function exists(command) {
         
-        if ("hivacreboothelp".includes(command)) {
+        if ("hivacreboothelp".includes(command)) { //todo: change this
             return true;
         }
         
