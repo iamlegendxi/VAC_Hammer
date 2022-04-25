@@ -209,7 +209,7 @@ async function showDefaultHelpMenu(message) {
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Roster", "``franchises\nroster\nteams``", true)
         .addField("Transaction", "``Use ?help transaction to view a list of transaction commands``", true)
-        .addField("Misc.", "``hivac``")
+        .addField("Misc.", "``hivac\ndates``")
         .setFooter({ text: "Help Menu", iconURL: settings.vdc_icon_url });
 
     await message.channel.send({ embeds: [defaultHelpMenu] });
