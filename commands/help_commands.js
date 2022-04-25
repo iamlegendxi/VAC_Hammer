@@ -73,12 +73,20 @@ const NON_ADMIN_HELP = {
         .addField("Example Usage:", "``?franchises``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
-    "teams": new MessageEmbed()
+        "teams": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("teams [franchise]")
         .setDescription("Displays all teams and their respective tiers within a franchise.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usage:", "``?teams hg``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+        "dates": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("dates")
+        .setDescription("Displays important dates such as combines, draft, preseason, etc.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usage:", "``?dates``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
 }
 
