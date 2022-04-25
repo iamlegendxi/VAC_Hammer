@@ -5,24 +5,24 @@
         "name": "The Automata",
         "image": "https://cdn.discordapp.com/attachments/966212617318326282/966325062607204402/AutomataLogo-01.png",
         "teams": {
-            "contender": "Swarm",
-            "challenger": ""
+            "contender": "Rockem Sockems",
+            "advanced": "",
+            "master": "Swarm",
+            "premier": "Bionics"
         }
     },
-
     "l7": {
         "role_id": "966395530211127396",
         "gm_id": "205364070566592513",
         "name": "Lucky Sevens",
-        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "image": "https://media.discordapp.net/attachments/764395210683711509/968016074077515797/unknown.png",
         "teams": {
-            "contender": "Royal Flush",
-            "challenger": ""
+            "contender": "Snake Eyes",
+            "advanced": "The Yahtzee",
+            "master": "Blackjacks",
+            "premier": "Royal Flush"
         }
-
-        
     },
-
     "sha": {
         "role_id": "966904182223290488",
         "gm_id": "166361318293635072",
@@ -30,25 +30,23 @@
         "image": "https://cdn.discordapp.com/attachments/963476456409825370/966905175518367804/GLD_LOGO_TRANSPARENT.png",
         "teams": {
             "contender": "Threshers",
-            "challenger": ""
+            "advanced": "",
+            "master": "Makos",
+            "premier": "Great Whites"
         }
-
-        
     },
-
     "elo": {
         "role_id": "966904250615599163",
         "gm_id": "845158362961674250",
         "name": "ELO Snatchers",
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
-            "contender": "Bandits",
-            "challenger": ""
+            "contender": "ELO Bandits",
+            "advanced": "",
+            "master": "ELO Thieves",
+            "premier": "MMR Gobblers"
         }
-
-        
     },
-
     "pfc": {
         "role_id": "966904250615599163",
         "gm_id": "811383083873730561",
@@ -56,12 +54,11 @@
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
             "contender": "Candymen",
-            "challenger": ""
+            "advanced": "",
+            "master": "Chocolatiers",
+            "premier": "Gingerbread Men"
         }
-
-        
     },
-
     "gt": {
         "role_id": "963905754711076906",
         "gm_id": "226536263765721091",
@@ -69,10 +66,22 @@
         "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
         "teams": {
             "contender": "Sod Gods",
-            "challenger": ""
+            "advanced": "",
+            "master": "Weed Whackers",
+            "premier": "Tri-Blade"
         }
+    },
 
-        
+    "os": {
+            "role_id": "968018582934024262",
+            "gm_id": "388890741721530368",
+            "name": "Grass Touchers",
+            "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+            "teams": {
+                "contender": "Flawless Falafels",
+                "advanced": "Divine Döner Kebabs",
+                "master": "Tutelary Tacos",
+                "premier": "Heroic Gyros"
+            }
+        }
     }
-    
-}

@@ -98,7 +98,7 @@ const COMMANDS = {
             await message.channel.send("Missing arguments. Proper syntax is ?teams [franchise]");
             return false;
         }
-        let franchise = franchises[args[0]];
+        let franchise = franchises[args[0].toLowerCase()];
         let teams = "";
         let tier = "";
 
