@@ -25,8 +25,28 @@ module.exports = {
         }
         await showDefaultHelpMenu(message);
         return true;
+    },
+
+    displayDates: async function displayDates(message) {
+        return await message.channel.send({
+            embeds: [new MessageEmbed()
+                .setColor(colors.vdc_default)
+                .setTitle("Dates")
+                .setDescription(`\`\`\`${DATES}\`\`\``)
+                .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+                .setTimestamp()
+                .setFooter({ text: "Dates are subject to change.", iconURL: settings.vdc_default })]
+        });
     }
 }
+
+const DATES = "Combines: 4/27, 4/30, 5/1, 5/4, 5/7, 5/8\n" +
+    "Signups Close: 5/6 at 11:59pm EST\n" +
+    "Draft Order Lottery: 5/8 before combines\n" +
+    "Offseason Transactions: 5/9 - 5/10\n\n" +
+    "VDC Draft: 5/11\n\n" +
+    "Preseason Matches: 5/14*, 5/18, 5/21*\n\n" +
+    "Match Day 1: 5/25";
 
 const NON_ADMIN_HELP = {
     "hivac": new MessageEmbed()
@@ -52,14 +72,14 @@ const NON_ADMIN_HELP = {
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usage:", "``?franchises``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
-        
+
     "teams": new MessageEmbed()
-    .setColor(colors.vdc_default)
-    .setTitle("teams [franchise]")
-    .setDescription("Displays all teams and their respective tiers within a franchise.")
-    .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-    .addField("Example Usage:", "``?teams hg``", false)
-    .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
+        .setColor(colors.vdc_default)
+        .setTitle("teams [franchise]")
+        .setDescription("Displays all teams and their respective tiers within a franchise.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usage:", "``?teams hg``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
 }
 
 const ADMIN_HELP = {

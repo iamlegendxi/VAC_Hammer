@@ -20,7 +20,7 @@ module.exports = {
         }
 
         else if (command == "reboot") {
-            console.log(message.author.id)
+            console.log(`${message.author.id} tried to do a naughty`)
             if (!(message.author.id == settings.bot_owner_id)) {
                 await message.channel.send("Nice try.")
                 return false;
@@ -42,6 +42,10 @@ module.exports = {
             }
         }
 
+        else if (command == "dates") {
+            return await HelpCommands.displayDates(message);
+        }
+
         else if (command == "help") {
             return await HelpCommands.displayHelpMenu(message, args);
         }
@@ -59,7 +63,7 @@ module.exports = {
 
     exists: async function exists(command) {
         
-        if ("hivacreboothelp".includes(command)) { //todo: change this
+        if ("hivacreboothelpdates".includes(command)) { //todo: change this
             return true;
         }
         
