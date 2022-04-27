@@ -3,10 +3,10 @@
         "role_id": "963905820351946764",
         "gm_id": "174341575000850432",
         "name": "The Automata",
-        "image": "https://cdn.discordapp.com/attachments/966212617318326282/966325062607204402/AutomataLogo-01.png",
+        "image": "https://cdn.discordapp.com/attachments/966212617318326282/968855773394374656/V2_VDC_AutomataLogo-01.png",
         "teams": {
             "contender": "Rockem Sockems",
-            "advanced": "",
+            "advanced": "Exos",
             "master": "Swarm",
             "premier": "Bionics"
         }
@@ -23,28 +23,28 @@
             "premier": "Royal Flush"
         }
     },
-    "sha": {
+    "at": {
         "role_id": "966904182223290488",
-        "gm_id": "166361318293635072",
-        "name": "Shark Tank",
-        "image": "https://cdn.discordapp.com/attachments/963476456409825370/966905175518367804/GLD_LOGO_TRANSPARENT.png",
+        "gm_id": "330749415730053120",
+        "name": "Anti Tilt",
+        "image": "https://cdn.discordapp.com/attachments/966212617318326282/968877138998620210/AntiTilt_Logo_White.png",
         "teams": {
-            "contender": "Threshers",
-            "advanced": "",
-            "master": "Makos",
-            "premier": "Great Whites"
+            "contender": "Team Ego",
+            "advanced": "Team Upset",
+            "master": "Team Pragmatic",
+            "premier": "Team Positive"
         }
     },
-    "elo": {
+    "byz": {
         "role_id": "966904250615599163",
         "gm_id": "845158362961674250",
         "name": "ELO Snatchers",
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
-            "contender": "ELO Bandits",
-            "advanced": "",
-            "master": "ELO Thieves",
-            "premier": "MMR Gobblers"
+            "contender": "Cataphract",
+            "advanced": "Pentrarch",
+            "master": "Tetrarch",
+            "premier": "Menavlatoi"
         }
     },
     "pfc": {
@@ -54,7 +54,7 @@
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
             "contender": "Candymen",
-            "advanced": "",
+            "advanced": "Sugarcubes",
             "master": "Chocolatiers",
             "premier": "Gingerbread Men"
         }
@@ -65,10 +65,10 @@
         "name": "Grass Touchers",
         "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
         "teams": {
-            "contender": "Sod Gods",
-            "advanced": "",
+            "contender": "Everwind",
+            "advanced": "Green Blade",
             "master": "Weed Whackers",
-            "premier": "Tri-Blade"
+            "premier": "Sod God"
         }
     },
 
@@ -83,5 +83,20 @@
                 "master": "Tutelary Tacos",
                 "premier": "Heroic Gyros"
             }
+        },
+
+    "lg": {
+            "role_id": "968755818231128114",
+            "gm_id": "119468291579183104",
+            "name": "Light Garden",
+            "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
+            "teams": {
+                "contender": "Everwind",
+                "advanced": "Green Blade",
+                "master": "Weed Whackers",
+                "premier": "Sod God"
+            }
+
         }
+        
     }
