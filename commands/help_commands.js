@@ -40,12 +40,12 @@ module.exports = {
     }
 }
 
-const DATES = "Combines: 4/27, 4/30, 5/1, 5/4, 5/7, 5/8\n" +
-    "Signups Close: 5/6 at 11:59pm EST\n" +
-    "Draft Order Lottery: 5/8 before combines\n" +
+const DATES = "Combines: 4/29, 4/30, 5/4, 5/7, 5/8\n" +
+    "Signups Close: 5/4 at 11:59pm EST\n" +
+    "Draft Order Lottery: 5/8\n" +
     "Offseason Transactions: 5/9 - 5/10\n\n" +
     "VDC Draft: 5/11\n\n" +
-    "Preseason Matches: 5/14*, 5/18, 5/21*\n\n" +
+    "Preseason Matches: 5/13, 5/18, 5/20\n\n" +
     "Match Day 1: 5/25";
 
 const NON_ADMIN_HELP = {

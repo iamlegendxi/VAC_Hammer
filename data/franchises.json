@@ -89,7 +89,7 @@
             "role_id": "968755818231128114",
             "gm_id": "119468291579183104",
             "name": "Light Garden",
-            "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
+            "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
             "teams": {
                 "contender": "Everwind",
                 "advanced": "Green Blade",
@@ -97,6 +97,20 @@
                 "premier": "Sod God"
             }
 
-        }
+        },
+
+    "aa": {
+            "role_id": "969642817397850112",
+            "gm_id": "546072288571949059",
+            "name": "Agents of Ash",
+            "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+            "teams": {
+                "contender": "Tarnished Tryhards",
+                "advanced": "Humble Hunters",
+                "master": "Cursed Kings",
+                "premier": "Hollowed Heroes"
+            }
+
+    }
         
     }
