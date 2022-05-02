@@ -29,10 +29,10 @@
         "name": "Anti Tilt",
         "image": "https://cdn.discordapp.com/attachments/966212617318326282/968877138998620210/AntiTilt_Logo_White.png",
         "teams": {
-            "contender": "Team Ego",
-            "advanced": "Team Upset",
-            "master": "Team Pragmatic",
-            "premier": "Team Positive"
+            "premier": "Team Ego",
+            "master": "Team Upset",
+            "advanced": "Team Pragmatic",
+            "contender": "Team Positive"
         }
     },
     "byz": {
@@ -76,14 +76,14 @@
             "role_id": "968018582934024262",
             "gm_id": "388890741721530368",
             "name": "Omnipotent Sandwiches",
-            "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+            "image": "https://media.discordapp.net/attachments/966212617318326282/970542265514721320/omnipotent_sammich.png",
             "teams": {
                 "contender": "Flawless Falafels",
                 "advanced": "Divine Döner Kebabs",
                 "master": "Tutelary Tacos",
                 "premier": "Heroic Gyros"
             }
-        },
+    },
 
     "lg": {
             "role_id": "968755818231128114",
@@ -97,7 +97,7 @@
                 "premier": "Sod God"
             }
 
-        },
+    },
 
     "aa": {
             "role_id": "969642817397850112",
@@ -111,6 +111,35 @@
                 "premier": "Hollowed Heroes"
             }
 
+    },
+
+    "fnt": {
+        "role_id": "970712837003563048",
+        "gm_id": "224239240349876224",
+        "name": "Finest",
+        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "teams": {
+            "contender": "Amethyst",
+            "advanced": "Snowflake Obsidian",
+            "master": "Moss Agate",
+            "premier": "Emerald"
+        }
+
+    },
+
+    "tb": {
+        "role_id": "970713326709514250",
+        "gm_id": "328323700556562433",
+        "name": "Agents of Ash",
+        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "teams": {
+            "contender": "Sparks",
+            "advanced": "Embers",
+            "master": "Flames",
+            "premier": "Inferno"
+        }
+
     }
+
         
-    }
+}
