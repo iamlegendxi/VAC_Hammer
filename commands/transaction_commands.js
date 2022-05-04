@@ -336,16 +336,15 @@ const COMMANDS = {
         let keeper = false;
 
         await targetMember.guild.fetch();
+        if (!targetRole) {
+            message.channel.send("No such franchise or franchise role exists.");
+            return false;
+        }
         keeper = targetMember.roles.cache.some(r => r.id === targetRole.id); //has to be done after the fetch
 
         if (!(targetMember.roles.cache.some(r => (r.name === settings.roles.player_retireable.de_role_name) ||
             (r.name === settings.roles.player_retireable.fa_role_name)) && !keeper)) {
             await message.channel.send("Player is not draft eligible or is missing the required roles.");
-            return false;
-        }
-
-        if (!targetRole) {
-            message.channel.send("No such franchise or franchise role exists.");
             return false;
         }
 
