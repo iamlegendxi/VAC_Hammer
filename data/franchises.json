@@ -86,16 +86,44 @@
     },
 
     "lg": {
-            "role_id": "968755818231128114",
-            "gm_id": "119468291579183104",
-            "name": "Light Garden",
+        "role_id": "968755818231128114",
+        "gm_id": "119468291579183104",
+        "name": "Light Garden",
+        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "teams": {
+            "contender": "Pink Azalea",
+            "advanced": "Red Rose",
+            "master": "Purple Iris",
+            "premier": "Blue Lotus"
+        }
+
+    },
+
+    "ae": {
+            "role_id": "971546122160062474",
+            "gm_id": "207616041449160704",
+            "name": "Aesthetic",
             "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
             "teams": {
-                "contender": "Everwind",
-                "advanced": "Green Blade",
-                "master": "Weed Whackers",
-                "premier": "Sod God"
+                "contender": "Chill-Fi",
+                "advanced": "Future",
+                "master": "Glitch Hop",
+                "premier": "Vaporwave"
             }
+
+    },
+
+    "kc": {
+        "role_id": "971546196407635999",
+        "gm_id": "385606390334357507",
+        "name": "Kingdom Coffee",
+        "image": "https://cdn.discordapp.com/attachments/966212617318326282/971147494115401728/Kingdom_Coffee_Logo.png",
+        "teams": {
+            "contender": "Pink Azalea",
+            "advanced": "Red Rose",
+            "master": "Purple Iris",
+            "premier": "Blue Lotus"
+        }
 
     },
 
@@ -130,7 +158,7 @@
     "tb": {
         "role_id": "970713326709514250",
         "gm_id": "328323700556562433",
-        "name": "Agents of Ash",
+        "name": "The Blaze",
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
             "contender": "Sparks",
