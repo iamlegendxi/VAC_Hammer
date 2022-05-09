@@ -35,18 +35,6 @@
             "contender": "Team Positive"
         }
     },
-    "byz": {
-        "role_id": "966904250615599163",
-        "gm_id": "845158362961674250",
-        "name": "Byzantium",
-        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
-        "teams": {
-            "contender": "Cataphract",
-            "advanced": "Pentrarch",
-            "master": "Tetrarch",
-            "premier": "Menavlatoi"
-        }
-    },
     "pfc": {
         "role_id": "966904250615599163",
         "gm_id": "811383083873730561",
