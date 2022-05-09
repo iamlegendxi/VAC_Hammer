@@ -46,7 +46,7 @@ const COMMANDS = {
         if (message.author.id != settings.bot_owner_id) return false;
         
         let channelId = args[0];
-        let msg = args.slice(1).join();
+        let msg = args.slice(1).join(' ');
         let targetChannel = message.guild.channels.cache.get(channelId);
 
         await targetChannel.send(msg);
