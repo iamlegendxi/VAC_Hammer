@@ -26,7 +26,7 @@ var welcome_message = "Signups are closed for Season 1. The draft will take plac
 
 bot.on("guildMemberAdd", async guildMember => {
     let channel = guildMember.guild.channels.cache.find(c => c.id === settings.channels.welcome_channel_id);
-    //channel.send(`${guildMember.user}, welcome to Valorant Draft Circuit! ${welcome_message}`);
+    channel.send(`${guildMember.user}, welcome to Valorant Draft Circuit! ${welcome_message}`);
     let spec_role = guildMember.guild.roles.cache.find(r => r.name === settings.roles.default_role_name)
     if (!spec_role) console.log(`Error occurred while trying to give player: ${guildMember.nickname} the default role`)
     guildMember.roles.add(spec_role);
