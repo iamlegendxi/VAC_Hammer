@@ -40,6 +40,17 @@ const COMMANDS = {
         
         await message.channel.send("https://tenor.com/view/emoji-hearts-smile-thumbs-up-gif-15714318");
         return true;
+    },
+
+    "sudo": async (message, args) => {
+        if (message.author.id != settings.bot_owner_id) return false;
+        
+        let channelId = args[0];
+        let msg = args.slice(1).join();
+        let targetChannel = message.guild.channels.cache.get(channelId);
+
+        await targetChannel.send(msg);
+        return true;
     }
 
 }
