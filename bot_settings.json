@@ -22,11 +22,14 @@
             "de_role_name": "Draft Eligible",
             "fa_role_name": "Free Agent",
             "captain_role_name": "Captain",
-            "permfa_role_name": "Permanent Free Agent",
+            "permfa_role_name": "Restricted Free Agent",
             "league_role_name": "League"
         },
         "tier_retireable": {
-            "contender": "Contender"
+            "contender": "Contender",
+            "advanced": "Advanced",
+            "master": "Master",
+            "premier": "Premier"
         }
     },
     "match_days": {

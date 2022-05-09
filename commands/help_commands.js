@@ -190,13 +190,13 @@ const ADMIN_HELP = {
         .addField("Example Usages:", "``?trade os @Legend#4270 for hg @Spence#6132, Season 2 2nd Round Pick, Season 1 1st Round Pick (4)``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention.", iconURL: settings.vdc_icon_url }),
 
-    "movepermfa": new MessageEmbed()
+    "moverfa": new MessageEmbed()
         .setColor(colors.vdc_default)
-        .setTitle("movePermFA [@user] [nickname?]")
-        .setDescription("Moves a player to permanent free agency with the specified nickname (if provided)." +
-            " If the user is a permanent free agent already, they are promoted to normal free agency.")
+        .setTitle("moveRFA [@user] [nickname?]")
+        .setDescription("Moves a player to restricted free agency with the specified nickname (if provided)." +
+            " If the user is a restricted free agent already, they are promoted to normal free agency.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-        .addField("Example Usages:", "``?movePermFA @Legend#4270\n?movePermFA @Legend#4270 Badmin``", false)
+        .addField("Example Usages:", "``?moveRFA @Legend#4270\n?moveRFA @Legend#4270 Badmin``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
     "retirewithrole": new MessageEmbed()

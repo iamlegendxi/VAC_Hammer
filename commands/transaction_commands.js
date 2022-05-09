@@ -416,9 +416,9 @@ const COMMANDS = {
         return true;
     },
 
-    "movePermFA": async (message, args) => {
+    "moveRFA": async (message, args) => {
         if (!args[0]) {
-            await message.channel.send("Missing arguments. Proper syntax is ?makePermFA [@player] [nickname?]");
+            await message.channel.send("Missing arguments. Proper syntax is ?moveRFA [@player] [nickname?]");
             return false;
         }
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
@@ -440,12 +440,13 @@ const COMMANDS = {
             await targetMember.roles.add(targetRole);
             await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
             await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
-            await targetMember.setNickname(`FA | ${desiredNickname}`);
+            await targetMember.setNickname(`RFA | ${desiredNickname}`);
             return true;
         }
         else { //the user is a permfa who is being promoted to normal free agency
             await targetMember.roles.remove(targetRole);
             await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
+            await targetMember.setNickname(`FA | ${targetMember.nickname.split('|')[1].trim()}`);
             return true;
         }
     },
