@@ -73,7 +73,7 @@ const NON_ADMIN_HELP = {
         .addField("Example Usage:", "``?franchises``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
-        "teams": new MessageEmbed()
+    "teams": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("teams [franchise]")
         .setDescription("Displays all teams and their respective tiers within a franchise.")
@@ -81,7 +81,7 @@ const NON_ADMIN_HELP = {
         .addField("Example Usage:", "``?teams hg``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
-        "dates": new MessageEmbed()
+    "dates": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("dates")
         .setDescription("Displays important dates such as combines, draft, preseason, etc.")
@@ -198,6 +198,15 @@ const ADMIN_HELP = {
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usages:", "``?movePermFA @Legend#4270\n?movePermFA @Legend#4270 Badmin``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+    "retirewithrole": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("retireWithRole [@role]")
+        .setDescription("Retires all users who have the specified role.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usages:", "``?retireWithRole @Not Enough Games``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention. ... denotes a varaible number of args", iconURL: settings.vdc_icon_url }),
+
 }
 
 async function showDefaultHelpMenu(message) {

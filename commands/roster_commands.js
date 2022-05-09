@@ -121,7 +121,3 @@ const COMMANDS = {
         return true;
     }
 }
-
-async function searchFranchises(franchise) {
-
-}

@@ -25,10 +25,8 @@ module.exports = {
                 await message.channel.send("Nice try.")
                 return false;
             }
-            await bot.destroy();
-            await bot.login(private_settings.token);
-            await message.channel.send("Bot has been restarted!")
-            return true;
+            await message.channel.send("Restarting...");
+            process.exit();
         }
         
         else if (Transactions.exists(command)) {

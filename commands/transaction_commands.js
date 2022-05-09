@@ -93,12 +93,18 @@ const COMMANDS = {
     },
 
     "retire": async (message, args) => {
+        //await message.guild.members.fetch();
         let secondaryArgs = args.slice(1).join(' ');
         let player_roles = settings.roles.player_retireable; let gm_roles = settings.roles.gm_retireable;
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = message.guild.members.cache.get(targetId);
         if (!secondaryArgs) secondaryArgs = "-player -gm"; //defaults to both
         let removeFranchiseRoles = secondaryArgs.includes("-player") && secondaryArgs.includes("-gm");
+
+        if (!targetMember) {
+            await message.channel.send("Member does not exist within the guild.");
+            return false;
+        }
 
         if (secondaryArgs.includes("-player")) {
             await removeRoles(player_roles, targetMember, removeFranchiseRoles);
@@ -326,11 +332,12 @@ const COMMANDS = {
             await message.channel.send("Missing arguments. Proper syntax is: ?draft [@player] [abbreviation] [round] [pick]");
             return false;
         }
-        let franchiseAbbrev = args[1];
+        let franchiseAbbrev = args[1].toLowerCase();
         let pick = args[3];
         let round = args[2];
         let targetRole = message.guild.roles.cache.find(r => r.id === franchises[franchiseAbbrev].role_id);
-        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetId = (args[0].includes("@") ? args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "") : args[0]);
+        await message.guild.members.fetch();
         let targetMember = message.guild.members.cache.get(targetId);
         let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
         let keeper = false;
@@ -343,7 +350,7 @@ const COMMANDS = {
         keeper = targetMember.roles.cache.some(r => r.id === targetRole.id); //has to be done after the fetch
 
         if (!(targetMember.roles.cache.some(r => (r.name === settings.roles.player_retireable.de_role_name) ||
-            (r.name === settings.roles.player_retireable.fa_role_name)) && !keeper)) {
+            (r.name === settings.roles.player_retireable.fa_role_name))) && !keeper) {
             await message.channel.send("Player is not draft eligible or is missing the required roles.");
             return false;
         }
@@ -441,6 +448,47 @@ const COMMANDS = {
             await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
             return true;
         }
+    },
+
+    "retireWithRole": async (message, args) => {
+        if (!args[0]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?retireWithRole [@role]");
+            return false;
+        }
+        let failList = [];
+        let failCount = 0;
+        let role_id = args[0].slice(args[0].includes("!") ? 4 : 3, -1);
+        let targetRole = message.guild.roles.cache.get(role_id);
+        await targetRole.guild.members.fetch();
+        let roleList = await targetRole.members.map(m => m.user.id);
+
+        for (let x in roleList) {
+            console.log(failList);
+            try {
+                let tryRetire = await COMMANDS["retire"](message, [`<@${roleList[x]}>`, "-player", "-gm"]);
+
+                if (!tryRetire) {
+                    failList[failCount] = roleList[x];
+                    failCount = failCount + 1;
+                }
+            } catch (e) {
+                console.log(e);
+                failList[failCount] = roleList[x];
+                failCount = failCount + 1;
+            }
+        }
+
+        if (failCount == 0) {
+            await message.channel.send("All users have been retired.");
+            return true;
+        }
+
+        let failMsg = "The following users were unable to be retired: \n"
+        for (let f of failList) {
+            failMsg += `<@${f}>\n`
+        }
+        await message.channel.send(`${failMsg}\n(all other users were retired successfully, if any)`);
+        return false;
     }
 
 }
