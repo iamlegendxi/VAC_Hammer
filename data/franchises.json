@@ -42,9 +42,9 @@
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
             "contender": "Candymen",
-            "advanced": "Sugarcubes",
-            "master": "Chocolatiers",
-            "premier": "Gingerbread Men"
+            "advanced": "Chocolatiers",
+            "master": "Sugarcubes",
+            "premier": ""
         }
     },
     "gt": {
@@ -53,10 +53,10 @@
         "name": "Grass Touchers",
         "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
         "teams": {
-            "contender": "Everwind",
-            "advanced": "Green Blade",
-            "master": "Weed Whackers",
-            "premier": "Sod God"
+            "contender": "Sod Gods",
+            "advanced": "Weed Whackers",
+            "master": "Tri-Blade",
+            "premier": ""
         }
     },
 
@@ -82,7 +82,7 @@
             "contender": "Pink Azalea",
             "advanced": "Red Rose",
             "master": "Purple Iris",
-            "premier": "Blue Lotus"
+            "premier": ""
         }
 
     },
@@ -93,7 +93,7 @@
             "name": "Aesthetic",
             "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
             "teams": {
-                "contender": "Chill-Fi",
+                "contender": "",
                 "advanced": "Future",
                 "master": "Glitch Hop",
                 "premier": "Vaporwave"
@@ -110,7 +110,7 @@
             "contender": "Decaf",
             "advanced": "Latte",
             "master": "Cold Brew",
-            "premier": "Espresso"
+            "premier": ""
         }
 
     },
@@ -121,7 +121,7 @@
             "name": "Agents of Ash",
             "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
             "teams": {
-                "contender": "Tarnished Tryhards",
+                "contender": "",
                 "advanced": "Humble Hunters",
                 "master": "Cursed Kings",
                 "premier": "Hollowed Heroes"
@@ -135,7 +135,7 @@
         "name": "Finest",
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
-            "contender": "Amethyst",
+            "contender": "",
             "advanced": "Snowflake Obsidian",
             "master": "Moss Agate",
             "premier": "Emerald"
@@ -149,7 +149,7 @@
         "name": "The Blaze",
         "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
         "teams": {
-            "contender": "Sparks",
+            "contender": "",
             "advanced": "Embers",
             "master": "Flames",
             "premier": "Inferno"
