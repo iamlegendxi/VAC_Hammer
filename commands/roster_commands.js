@@ -49,6 +49,7 @@ const COMMANDS = {
         }
 
         //let roleList = targetRole.members.filter(m => tierRole.members.some(mem => mem.user.id === m.user.id));
+        await targetRole.guild.members.fetch();
         let roleList = await targetRole.members.map(m => m.nickname).filter(s => tierRole.members.map(m => m.nickname).includes(s));
         //let tierList = tierRole.members.map(m =>  m.user.id);
         let msg = "```";
