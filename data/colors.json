@@ -3,7 +3,7 @@
     "tier": {
         "contender":"#e0ae23",
         "advanced": "#056600",
-        "masters": "#8e7cc3",
+        "master": "#8e7cc3",
         "premier": "#b12bff"
     }
 }
