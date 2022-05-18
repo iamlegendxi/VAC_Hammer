@@ -96,7 +96,7 @@ const ADMIN_HELP = {
         .setTitle("Transaction Commands")
         .setDescription("Below is a list of all current transaction commands.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-        .addField("Commands:", "``makeDE\nretire\nsign\ncut\nsub\nunsub\nshowsubs\ntoggleDraftMode\ndraft\ntrade\nmovePermFA``", false)
+        .addField("Commands:", "``makeDE\nretire\nsign\ncut\nsub\nunsub\nshowsubs\ntoggleDraftMode\ndraft\ntrade\nmovePermFA\nretireWithRole\nmoveIR\npromote``", false)
         .setFooter({ text: "Help Menu", iconURL: settings.vdc_icon_url }),
 
     "makede": new MessageEmbed()
