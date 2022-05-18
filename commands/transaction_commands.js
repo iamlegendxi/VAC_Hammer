@@ -72,7 +72,8 @@ const COMMANDS = {
         }
         let deRole = await message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name);
 
-        await (targetMember.guild.fetch());
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         if (targetId === settings.server_owner_id) {
             await message.channel.send("Cannot modify nickname for this user.")
@@ -119,7 +120,8 @@ const COMMANDS = {
             await removeRoles(gm_roles, targetMember, removeFranchiseRoles);
         }
 
-        await (targetMember.guild.fetch());
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
 
@@ -150,7 +152,8 @@ const COMMANDS = {
             throw "User does not follow the proper nickname syntax and is trying to be signed. Check if they have retired?";
         }
 
-        await (targetMember.guild.fetch());
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         if (!(targetMember.user.id != franchises[abbrev].gm_id)) { //GMs can never be free agents and will always be signed to a franchise
 
@@ -183,7 +186,7 @@ const COMMANDS = {
         //tier should already be assigned to a player
         console.log(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`)
         //transactionChannel.send(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`);
-        await postTransaction("SIGN", `<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
+        await postTransaction("SIGN", `<@${targetMember.user.id}> (${targetMember.nickname.split('|')[1].trim()}) was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
 
         // let desiredName = (targetMember.nickname && targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
         // await targetMember.setNickname(`${abbrev.toUpperCase()} | ${desiredName}`);
@@ -207,7 +210,8 @@ const COMMANDS = {
             throw "User should have a nickname and is trying to be cut.";
         }
 
-        await targetMember.guild.fetch();
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         if (!(targetMember.roles.cache.some(r => r.name === franchises[abbrev].name))) {
             await message.channel.send("User is not a member of that franchise, check your command syntax and try again.");
@@ -218,9 +222,10 @@ const COMMANDS = {
             await targetMember.roles.remove(targetMember.roles.cache.find(r => r.name === franchises[abbrev].name));
             await targetMember.roles.add(faRole);
         }
-        console.log(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
+        console.log(`<@${targetMember.user.id}> (${targetMember.nickname}) was cut by the ${franchises[abbrev].teams[tier]}!`);
         //transactionChannel.send(`<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`);
-        await postTransaction("CUT", `<@${targetMember.user.id}> was cut by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
+        let targetMemNickname = targetMember.nickname.split('|')[1].trim();
+        await postTransaction("CUT", `<@${targetMember.user.id}> (${targetMemNickname}) was cut by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
         if (!(targetMember.user.id == franchises[abbrev].gm_id))
             await targetMember.setNickname(`FA | ${targetMember.nickname.split('|')[1].trim()}`);
         return true;
@@ -238,7 +243,8 @@ const COMMANDS = {
         let targetRole = message.guild.roles.cache.find(r => r.id === franchises[abbrev].role_id);
         let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
 
-        await targetMember.guild.fetch();
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name || r.name === settings.roles.player_retireable.permfa_role_name))) {
             await message.channel.send("User is not registered for the league, or is missing the Free Agent role.");
@@ -265,7 +271,8 @@ const COMMANDS = {
         //necessary checks are done, we're good to process the sub
         await targetMember.roles.add(targetRole);
         subsList[targetMember.user.id] = [targetMember, franchises[abbrev]];
-        await postTransaction("SUB", `<@${targetMember.user.id}> has signed a temporary contract with the ${franchises[abbrev].teams[tier]}!`,
+        let targetMemNickname = targetMember.nickname.split('|')[1].trim();
+        await postTransaction("SUB", `<@${targetMember.user.id}> (${targetMemNickname}) has signed a temporary contract with the ${franchises[abbrev].teams[tier]}!`,
             franchises[abbrev], tier, transactionChannel);
         return true;
     },
@@ -274,13 +281,14 @@ const COMMANDS = {
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = message.guild.members.cache.get(targetId);
 
-        await targetMember.guild.fetch();
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         await targetMember.roles.remove(targetMember.roles.cache.find(r => r.id === subsList[targetId][1].role_id));
         delete subsList[targetMember.user.id];
         console.log(`Manually unsubbed player: ${targetMember.user.id}`);
         await postTransaction("UNSUB", `<@${targetMember.user.id}> has finished their time as a substitute.`,
-            subsList[targetId][1], null, targetMember.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
+            subsList[targetId], null, targetMember.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id));
 
         return true;
     },
@@ -342,7 +350,8 @@ const COMMANDS = {
         let transactionChannel = message.guild.channels.cache.find(c => c.id === settings.channels.transaction_channel_id);
         let keeper = false;
 
-        await targetMember.guild.fetch();
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
         if (!targetRole) {
             message.channel.send("No such franchise or franchise role exists.");
             return false;
@@ -362,7 +371,9 @@ const COMMANDS = {
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.de_role_name));
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.fa_role_name));
         await targetMember.setNickname(`${franchiseAbbrev.toUpperCase()} | ${targetMember.nickname.split('|')[1].trim()}`);
-        await postDraftTransaction(round, pick, `The ${franchises[franchiseAbbrev].teams[draftTier]} ${keeper ? "keep" : "select"} <@${targetMember.user.id}>`,
+        let targetMemNickname = targetMember.nickname.split('|')[1].trim()
+        await postDraftTransaction(round, pick, 
+            `The ${franchises[franchiseAbbrev].teams[draftTier]} ${keeper ? "keep" : "select"} <@${targetMember.user.id}> (${targetMemNickname})`,
             franchises[franchiseAbbrev], draftTier, transactionChannel);
         return true;
 
@@ -381,7 +392,7 @@ const COMMANDS = {
         }
         for (let i = 0; i < tradeContents.length; i++) {
             let contents = tradeContents[i].trim().split(' ').slice(1).join(' ').split(',');
-            let franchise = franchises[tradeContents[i].trim().split(' ').slice(0, 1)];
+            let franchise = franchises[tradeContents[i].toLowerCase().trim().split(' ').slice(0, 1)];
 
             if (!franchise) {
                 await message.channel.send(`One or more of the provided franchises does not exist.`);
@@ -396,12 +407,13 @@ const COMMANDS = {
                 if (potentialUser) {
                     //player is involved in the trade, we need to remove old roles and add new ones
 
-                    await potentialUser.guild.fetch();
+                    await potentialUser.guild.roles.fetch();
+                    await potentialUser.guild.members.fetch();
 
                     await removeRoles({}, potentialUser, true);
                     await potentialUser.roles.add(franchise.role_id);
                     await potentialUser.setNickname(`${tradeContents[i].trim().split(' ').slice(0, 1)[0].toUpperCase()} | ${potentialUser.nickname.split('|')[1].trim()}`);
-                    tradeMessageContents[`${franchise.name} will receive: `] += `<@${potentialUser.user.id}>\n`;
+                    tradeMessageContents[`${franchise.name} will receive: `] += `<@${potentialUser.user.id}> (${potentialUser.nickname.split('|')[1].trim()})\n`;
                 }
                 else {
                     tradeMessageContents[`${franchise.name} will receive: `] += `${contents[j]}\n`;
@@ -426,7 +438,8 @@ const COMMANDS = {
         let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
         let targetRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.permfa_role_name);
 
-        await targetMember.guild.fetch();
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
 
         //never make a gm a permfa
         if (targetMember.roles.cache.some(r => r.name === settings.roles.gm_retireable.gm_role_name)) {
@@ -490,7 +503,7 @@ const COMMANDS = {
         }
         await message.channel.send(`${failMsg}\n(all other users were retired successfully, if any)`);
         return false;
-    }
+    },
 
 }
 
