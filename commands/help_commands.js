@@ -207,7 +207,7 @@ const ADMIN_HELP = {
         .addField("Example Usages:", "``?retireWithRole @Not Enough Games``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention. ... denotes a varaible number of args", iconURL: settings.vdc_icon_url }),
 
-    "moveIR": new MessageEmbed()
+    "moveir": new MessageEmbed()
         .setColor(colors.vdc_default)
         .setTitle("moveIR [@player]")
         .setDescription("Moves a player to inactive reserve, or activates them from it if they have the role.")
