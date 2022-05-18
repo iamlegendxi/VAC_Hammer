@@ -207,6 +207,24 @@ const ADMIN_HELP = {
         .addField("Example Usages:", "``?retireWithRole @Not Enough Games``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention. ... denotes a varaible number of args", iconURL: settings.vdc_icon_url }),
 
+    "moveIR": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("moveIR [@player]")
+        .setDescription("Moves a player to inactive reserve, or activates them from it if they have the role.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Requirements:", "``-User is signed to a franchise``", false)
+        .addField("Example Usages:", "``?moveIR @Legend#4270``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+    "promote": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("promote [@user] [tier]")
+        .setDescription("Promotes a player to the specified tier (relegations are possible with this command but will look weird for now)")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Requirements:", "``-User is signed to a franchise``", false)
+        .addField("Example Usages:", "``?promote @Legend#4270 master``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
 }
 
 async function showDefaultHelpMenu(message) {
