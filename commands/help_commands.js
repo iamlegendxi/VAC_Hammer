@@ -192,11 +192,11 @@ const ADMIN_HELP = {
 
     "moverfa": new MessageEmbed()
         .setColor(colors.vdc_default)
-        .setTitle("moveRFA [@user] [nickname?]")
+        .setTitle("moveRFA [@user] [tier] [nickname?]")
         .setDescription("Moves a player to restricted free agency with the specified nickname (if provided)." +
             " If the user is a restricted free agent already, they are promoted to normal free agency.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-        .addField("Example Usages:", "``?moveRFA @Legend#4270\n?moveRFA @Legend#4270 Badmin``", false)
+        .addField("Example Usages:", "``?moveRFA @Legend#4270 advanced\n?moveRFA @Legend#4270 advanced Badmin``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
     "retirewithrole": new MessageEmbed()

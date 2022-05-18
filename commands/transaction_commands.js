@@ -430,13 +430,14 @@ const COMMANDS = {
     },
 
     "moveRFA": async (message, args) => {
-        if (!args[0]) {
-            await message.channel.send("Missing arguments. Proper syntax is ?moveRFA [@player] [nickname?]");
+        if (!args[0] && !args[1]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?moveRFA [@player] [tier] [nickname?]");
             return false;
         }
+        let tier = args[1];
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = await message.guild.members.cache.get(targetId);
-        let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
+        let desiredNickname = (args[2] ? args.slice(2).join(' ') : targetMember.user.username);
         let targetRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.permfa_role_name);
 
         await targetMember.guild.roles.fetch();
@@ -452,6 +453,7 @@ const COMMANDS = {
         if (!(targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.permfa_role_name))) {
             await removeRoles(settings.roles.player_retireable, targetMember, true);
             await targetMember.roles.add(targetRole);
+            await targetMember.roles.add(message.guild.roles.cache.find(r => r.name.toLowerCase() === tier.toLowerCase()));
             await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
             await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
             await targetMember.setNickname(`RFA | ${desiredNickname}`);
