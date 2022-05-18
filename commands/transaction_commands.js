@@ -186,7 +186,8 @@ const COMMANDS = {
         //tier should already be assigned to a player
         console.log(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`)
         //transactionChannel.send(`<@${targetMember.user.id}> was signed by the ${franchises[abbrev].teams[tier]}!`);
-        await postTransaction("SIGN", `<@${targetMember.user.id}> (${targetMember.nickname.split('|')[1].trim()}) was signed by the ${franchises[abbrev].teams[tier]}!`, franchises[abbrev], tier, transactionChannel);
+        await postTransaction("SIGN", `<@${targetMember.user.id}> (${targetMember.nickname.split('|')[1].trim()}) was signed by the ${franchises[abbrev].teams[tier]}!`,
+         franchises[abbrev], tier, transactionChannel);
 
         // let desiredName = (targetMember.nickname && targetMember.nickname.includes('|')) ? targetMember.nickname.split('|')[1].trim() : targetMember.user.username;
         // await targetMember.setNickname(`${abbrev.toUpperCase()} | ${desiredName}`);
@@ -416,7 +417,7 @@ const COMMANDS = {
                     tradeMessageContents[`${franchise.name} will receive: `] += `<@${potentialUser.user.id}> (${potentialUser.nickname.split('|')[1].trim()})\n`;
                 }
                 else {
-                    tradeMessageContents[`${franchise.name} will receive: `] += `${contents[j]}\n`;
+                    tradeMessageContents[`${franchise.name} will receive: `] += `${contents[j].trim()}\n`;
                 }
             }
             transactionContents = transactionContents + `${franchise.name} ${i == tradeContents.length - 1 ? " " : "and "}`
@@ -504,6 +505,73 @@ const COMMANDS = {
         await message.channel.send(`${failMsg}\n(all other users were retired successfully, if any)`);
         return false;
     },
+
+    "moveIR": async (message, args) => {
+        if (!args[0]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?moveIR [@player]");
+            return false;
+        }
+        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetMember = await message.guild.members.cache.get(targetId);
+        let targetRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.ir_role_name);
+        let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
+
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
+
+        for (var x of Object.keys(franchises)) {
+            if (targetMember.roles.cache.some(r => r.id === franchises[x].role_id)) {
+                if (!targetMember.roles.cache.some(r => r.name === settings.roles.player_retireable.ir_role_name)) {
+                    await targetMember.roles.add(targetRole);
+                    postTransaction("IR", `<@${targetMember.user.id}> (${targetMember.nickname.split('|')[1].trim()}) has been placed on Inactive Reserve!`,
+                    franchises[x], null, transactionChannel);
+                    return true;
+                }
+
+                console.log("reached");
+                await targetMember.roles.remove(targetRole);
+                postTransaction("IR", `<@${targetMember.user.id}> (${targetMember.nickname.split('|')[1].trim()}) has been activated from Inactive Reserve!`,
+                franchises[x], null, transactionChannel);
+                return true;
+
+            }
+        }
+
+        await message.channel.send("Player is not signed to a franchise, and therefore cannot be placed on Inactive Reserve.");
+        return false;
+    },
+
+    "promote": async (message, args) => {
+        if (!args[0] || !args[1]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?promote [@player] [tier]");
+            return false;
+        }
+        let tier = args[1].toLowerCase();
+        let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
+        let targetMember = await message.guild.members.cache.get(targetId);
+        let transactionChannel = message.guild.channels.cache.find(r => r.id === settings.channels.transaction_channel_id);
+
+        await targetMember.guild.roles.fetch();
+        await targetMember.guild.members.fetch();
+
+        for (var x of Object.keys(franchises)) {
+            if (targetMember.roles.cache.some(r => r.id === franchises[x].role_id)) {
+
+                for (var y of Object.keys(settings.roles.tier_retireable)) {
+                    await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.tier_retireable[y]));
+                }
+                
+                await targetMember.roles.add(message.guild.roles.cache.find(r => r.name.toLowerCase() === tier.toLowerCase()));
+                postTransaction("PROMOTE", `<@${targetMember.user.id}> (${targetMember.nickname.split('|')[1].trim()}) has been promoted to the ${franchises[x].teams[tier]}`,
+                franchises[x], tier, transactionChannel);
+                return true;
+            }
+        }
+
+        await message.channel.send("Player is not signed to a franchise, and therefore cannot be promoted to a tier. (did you mean to sub?)");
+        return false;
+
+    }
 
 }
 
