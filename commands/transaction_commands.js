@@ -434,7 +434,7 @@ const COMMANDS = {
             await message.channel.send("Missing arguments. Proper syntax is ?moveRFA [@player] [tier] [nickname?]");
             return false;
         }
-        let tier = args[1];
+        let tier = args[1].toLowerCase();
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = await message.guild.members.cache.get(targetId);
         let desiredNickname = (args[2] ? args.slice(2).join(' ') : targetMember.user.username);
