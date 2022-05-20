@@ -31,7 +31,7 @@ module.exports = {
         
         else if (Transactions.exists(command)) {
             await (message.guild.fetch());
-            if (message.member.roles.cache.some(role => role.name === "Admin")) {
+            if (message.member.roles.cache.some(role => (role.name === "Admin" || role.name == "Transactions"))) {
                 return await Transactions.execute(message, args);
             }
             else {
