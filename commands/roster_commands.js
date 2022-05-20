@@ -120,5 +120,47 @@ const COMMANDS = {
         });
 
         return true;
+    },
+
+    "captains": async (message, args) => {
+        let captRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.captain_role_name);
+        let franchiseRestriction; let tierRestriction;
+        
+        if (args[0]) {
+            for (let f of Object.keys(franchises)) {
+                if (args.some(a => a === f)) {
+                    franchiseRestriction = message.guild.roles.cache.get(franchises[f].role_id);
+                }
+            }
+
+            for (let t of Object.keys(settings.roles.tier_retireable)) {
+                if (args.some(a => a === t)) {
+                    tierRestrictions = message.guild.roles.cache.find(r => r.name === settings.roles.tier_retireable[t]);
+                }
+            }
+        }
+
+        await captRole.guild.members.fetch();
+
+        let roleList = await captRole.members.cache.filter(m => !(m.roles.cache.has(franchiseRestriction) || m.roles.cache.has(tierRestriction)));
+
+        let msg = "```";
+
+        for (let x in roleList) {
+            msg = msg + roleList[x] + "\n";
+        }
+        msg = msg + "```";
+
+        await message.channel.send({
+            embeds: [new MessageEmbed()
+                .setColor(colors.vdc_default)
+                .setTitle(`List of Captains:`)
+                .setDescription(`${msg}`)
+                .setThumbnail(settings.vdc_icon_url)
+            ]
+        });
+
+        return true;
+
     }
 }

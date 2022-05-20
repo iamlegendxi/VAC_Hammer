@@ -214,7 +214,7 @@ const COMMANDS = {
         await targetMember.guild.roles.fetch();
         await targetMember.guild.members.fetch();
 
-        if (!(targetMember.roles.cache.some(r => r.name === franchises[abbrev].name))) {
+        if (!(targetMember.roles.cache.some(r => r.name.toLowerCase() === franchises[abbrev].name.toLowerCase()))) {
             await message.channel.send("User is not a member of that franchise, check your command syntax and try again.");
             return false;
         }
