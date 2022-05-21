@@ -16,7 +16,7 @@ module.exports = {
         }
         else if (ADMIN_HELP[helpTarget]) {
             await message.guild.fetch();
-            if (!(message.member.roles.cache.some(r => r.name === "Admin"))) {
+            if (!(message.member.roles.cache.some(r => (r.name === "Admin" || r.name === "Transactions")))) {
                 await message.channel.send("You must be an admin to view the admin help menu.");
                 return false;
             }

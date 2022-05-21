@@ -11,7 +11,7 @@ const private_settings = require('./settings');
 const colors = require("./data/colors");
 
 
-var welcome_message = "Signups are closed for Season 1. The draft will take place on the 11th!";
+var welcome_message = "PermFA signups are open if you wish to play! <https://forms.gle/5Wqw6GvfP6ceg28D7>";
 
 // bot.on("interactionCreate", async interaction => {
 //     var asInteraction = true;

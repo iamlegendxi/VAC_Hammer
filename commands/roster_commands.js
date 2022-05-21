@@ -5,7 +5,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     search: async function search(message, args) {
-        var cmd_type = args[0].replace("?", "");
+        var cmd_type = args[0].replace("?", "").toLowerCase();
         try {
             return await COMMANDS[cmd_type](message, args.slice(1));
         } catch (error) {
