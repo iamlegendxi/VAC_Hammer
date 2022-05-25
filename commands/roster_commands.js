@@ -128,21 +128,35 @@ const COMMANDS = {
         
         if (args[0]) {
             for (let f of Object.keys(franchises)) {
-                if (args.some(a => a === f)) {
+                if (args.some(a => a.toLowerCase() === f.toLowerCase())) {
                     franchiseRestriction = message.guild.roles.cache.get(franchises[f].role_id);
+                    break;
                 }
             }
 
             for (let t of Object.keys(settings.roles.tier_retireable)) {
-                if (args.some(a => a === t)) {
-                    tierRestrictions = message.guild.roles.cache.find(r => r.name === settings.roles.tier_retireable[t]);
+                if (args.some(a => a.toLowerCase() === t.toLowerCase())) {
+                    tierRestriction = message.guild.roles.cache.find(r => r.name === settings.roles.tier_retireable[t]);
+                    break;
                 }
             }
         }
 
         await captRole.guild.members.fetch();
 
-        let roleList = await captRole.members.cache.filter(m => !(m.roles.cache.has(franchiseRestriction) || m.roles.cache.has(tierRestriction)));
+        let roleList;
+
+        if (!franchiseRestriction && !tierRestriction) {
+            roleList = await captRole.members.map(m => m.nickname);
+        }
+        else if (franchiseRestriction) {
+            roleList = await captRole.members.filter(m => m.roles.cache.has(franchiseRestriction.id)).map(m => m.nickname);
+        }
+        else if (tierRestriction) {
+            roleList = await captRole.members.filter(m => m.roles.cache.has(tierRestriction.id)).map(m => m.nickname);
+        }
+
+        roleList.sort();
 
         let msg = "```";
 

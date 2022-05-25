@@ -87,6 +87,14 @@ const NON_ADMIN_HELP = {
         .setDescription("Displays important dates such as combines, draft, preseason, etc.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usage:", "``?dates``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+    "captains": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("captains [team?] [tier?]")
+        .setDescription("Displays a list of captains. List can be narrowed with a franchise abbreviation or a tier name.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usage:", "``?captains\n?captains hg\n?captains advanced``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
 }
 
