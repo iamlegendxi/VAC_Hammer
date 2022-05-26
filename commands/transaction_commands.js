@@ -253,12 +253,12 @@ const COMMANDS = {
         }
 
         //Check today's date, and if it's not a match day, the command fails  (unsure if this is needed but it's better to be safe than sorry)
-        var today = new Date();
+        // var today = new Date();
 
-        if (!(today.getDay() == settings.match_days.day1 || today.getDay() == settings.match_days.day2)) {
-            await message.channel.send("Sub transactions must be completed on a match day.");
-            return false;
-        }
+        // if (!(today.getDay() == settings.match_days.day1 || today.getDay() == settings.match_days.day2)) {
+        //     await message.channel.send("Sub transactions must be completed on a match day.");
+        //     return false;
+        // }
 
         for (var x of Object.keys(franchises)) {
             if (targetMember.roles.cache.some(r => r.id === franchises[x].role_id)) {
