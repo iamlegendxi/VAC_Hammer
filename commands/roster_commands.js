@@ -220,5 +220,6 @@ const COMMANDS = {
             ]
         });
 
+        return true;
     }
 }
