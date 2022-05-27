@@ -44,7 +44,7 @@ var clearSubs = new cron.CronJob(`59 59 23 * * ${settings.match_days.day1},${set
     for (var s in subsList) {
         let targetUser = subsList[s][0];
 
-        await targetUser.guild.fetch();
+        await targetUser.guild.members.fetch();
 
         await targetUser.roles.remove(targetUser.roles.cache.find(r => r.id === subsList[s][1].role_id));
         console.log(`Automatically unsubbed player: ${s}`);
