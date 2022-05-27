@@ -125,7 +125,7 @@ const COMMANDS = {
     "captains": async (message, args) => {
         let captRole = message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.captain_role_name);
         let franchiseRestriction; let tierRestriction;
-        
+
         if (args[0]) {
             for (let f of Object.keys(franchises)) {
                 if (args.some(a => a.toLowerCase() === f.toLowerCase())) {
@@ -175,6 +175,50 @@ const COMMANDS = {
         });
 
         return true;
+
+    },
+
+    "fa": async (message, args) => {
+        if (!args[0]) {
+            await message.channel.send("Missing arguments. Proper syntax is ?fa [tier]");
+            return false;
+        }
+
+        let tier = args[0].toLowerCase();
+        let tierRole;
+
+        for (let x of Object.keys(settings.roles.tier_retireable)) {
+            if (settings.roles.tier_retireable[x].toLowerCase() == tier)
+                tierRole = message.guild.roles.cache.find(r => r.name === settings.roles.tier_retireable[x]);
+        }
+
+        if (!tierRole) {
+            await message.channel.send("Please enter a valid tier.");
+            return false;
+        }
+
+        await tierRole.guild.members.fetch();
+
+        let roleList = await tierRole.members.filter(m => (m.roles.cache.some(r => r.name === settings.roles.player_retireable.fa_role_name))
+            || (m.roles.cache.some(r => r.name === settings.roles.player_retireable.permfa_role_name))).map(m => m.nickname);
+
+        roleList.sort();
+
+        let msg = "```";
+
+        for (let x in roleList) {
+            msg = msg + roleList[x] + "\n";
+        }
+        msg = msg + "```";
+
+        await message.channel.send({
+            embeds: [new MessageEmbed()
+                .setColor(colors.vdc_default)
+                .setTitle(`List of ${tier} FAs:`)
+                .setDescription(`${msg}`)
+                .setThumbnail(settings.vdc_icon_url)
+            ]
+        });
 
     }
 }

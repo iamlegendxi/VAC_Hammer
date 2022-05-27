@@ -95,6 +95,14 @@ const NON_ADMIN_HELP = {
         .setDescription("Displays a list of captains. List can be narrowed with a franchise abbreviation or a tier name.")
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Example Usage:", "``?captains\n?captains hg\n?captains advanced``", false)
+        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+
+    "fa": new MessageEmbed()
+        .setColor(colors.vdc_default)
+        .setTitle("fa [tier]")
+        .setDescription("Displays a list of free agents in the specified tier.")
+        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+        .addField("Example Usage:", "``?fa contender``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url })
 }
 
