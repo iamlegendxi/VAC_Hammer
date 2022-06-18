@@ -37,7 +37,7 @@ var draftMode = false;
 var draftTier = "";
 
 //default: 59 59 23 * * ${settings.match_days.day1},${settings.match_days.day2}
-var clearSubs = new cron.CronJob(`59 59 03 * * ${parseInt(settings.match_days.day1) + 1},${parseInt(settings.match_days.day2) + 1}`, async () => {
+var clearSubs = new cron.CronJob(`59 59 06 * * ${parseInt(settings.match_days.day1) + 1},${parseInt(settings.match_days.day2) + 1}`, async () => {
     //currently releases subs at 3am UTC +0
 
     if (subsList == {}) return;
