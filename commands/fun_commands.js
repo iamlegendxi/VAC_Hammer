@@ -38,7 +38,7 @@ const COMMANDS = {
 
     "goodmins": async (message, args) => {
         
-        await message.channel.send("https://tenor.com/view/emoji-hearts-smile-thumbs-up-gif-15714318");
+        await message.channel.send("https://tenor.com/view/rjumen-laugh-man-cool-nice-perfect-gif-23675313");
         return true;
     },
 
