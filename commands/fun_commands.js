@@ -42,6 +42,12 @@ const COMMANDS = {
         return true;
     },
 
+    "chadmins": async (message, args) => {
+        
+        await message.channel.send("https://tenor.com/view/mujikcboro-seriymujik-gif-24361533");
+        return true;
+    },
+
     "sudo": async (message, args) => {
         if (message.author.id != settings.bot_owner_id) return false;
         
