@@ -11,7 +11,7 @@ const private_settings = require('./settings');
 const colors = require("./data/colors");
 
 
-var welcome_message = "PermFA signups are open if you wish to play! <https://forms.gle/5Wqw6GvfP6ceg28D7>";
+var welcome_message = "PermFA signups are now closed! This season is currently concluding, but make sure you stick around for Season 2!";
 
 // bot.on("interactionCreate", async interaction => {
 //     var asInteraction = true;
