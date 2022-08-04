@@ -64,10 +64,12 @@ const COMMANDS = {
 
     "accept": async (message, args) => {
         const roled = message.member.roles.cache.find(role => role.name === "Admin" || role.name === "Team Leader");
+        console.log(roled);
         if (!roled) return false;
 
         let user_id = args[0];
         let user = message.guild.members.cache.get(user_id);
+        console.log(user)
         if (!user) return false;
 
         await fetch(`https://api.valorantdraftcircuit.com/items/members/${user_id}`, {
@@ -80,6 +82,8 @@ const COMMANDS = {
                 isPlayer: true
             })
         })
+
+        console.log("A)@)F()VSD)")
 
         await user.roles.add("1004836225380798644");
 
