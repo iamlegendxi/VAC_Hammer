@@ -1,4 +1,7 @@
 const settings = require('../bot_settings');
+const private_settings = require('./settings');
+const fetch = require("node-fetch")
+
 const colors = require('../data/colors');
 const { MessageEmbed } = require('discord.js');
 
@@ -57,6 +60,44 @@ const COMMANDS = {
 
         await targetChannel.send(msg);
         return true;
-    }
+    },
 
+    "accept": async (message, args) => {
+        const roled = message.author.roles.cache.find(role => role.name === "Admin");
+        if (!roled) return false;
+
+        let user_id = args[0];
+        let user = message.guild.members.cache.get(user_id);
+        if (!user) return false;
+
+        await fetch(`https://api.valorantdraftcircuit.com/items/members/${user_id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${private_settings.API_AUTH}`
+            },
+            body: JSON.stringify({
+                isPlayer: true
+            })
+        })
+
+        await user.roles.add("1004836225380798644");
+
+        await user.send("You have been accepted into the Valorant Draft Circuit!");
+
+        return true;
+    },
+
+    "reject": async (message, args) => {
+        const roled = message.author.roles.cache.find(role => role.name === "Admin");
+        if (!roled) return false;
+
+        let user_id = args[0];
+        let user = message.guild.members.cache.get(user_id);
+        if (!user) return false;
+
+        await user.send("You have been rejected from the Valorant Draft Circuit, feel free to apply again when you meet the requirements!");
+
+        return true;
+    }
 }
