@@ -63,14 +63,11 @@ const COMMANDS = {
     },
 
     "accept": async (message, args) => {
-        console.log("IN")
         const roled = message.member.roles.cache.find(role => role.name === "Admin" || role.name === "Team Leader");
-        console.log(roled);
         if (!roled) return false;
 
         let user_id = args[0];
         let user = message.guild.members.cache.get(user_id);
-        console.log(user)
         if (!user) return false;
 
         await fetch(`https://api.valorantdraftcircuit.com/items/members/${user_id}`, {
@@ -84,9 +81,8 @@ const COMMANDS = {
             })
         })
 
-        console.log("A)@)F()VSD)")
-
-        await user.roles.add("1004836225380798644");
+        let role = message.guild.roles.cache.find(r => r.id === "1004836225380798644");
+        await user.roles.add(role);
 
         await user.send("You have been accepted into the Valorant Draft Circuit!");
 
