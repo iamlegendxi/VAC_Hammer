@@ -63,6 +63,7 @@ const COMMANDS = {
     },
 
     "accept": async (message, args) => {
+        console.log("IN")
         const roled = message.member.roles.cache.find(role => role.name === "Admin" || role.name === "Team Leader");
         console.log(roled);
         if (!roled) return false;
