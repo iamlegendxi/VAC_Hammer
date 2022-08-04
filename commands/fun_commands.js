@@ -63,7 +63,7 @@ const COMMANDS = {
     },
 
     "accept": async (message, args) => {
-        const roled = message.author.roles.cache.find(role => role.name === "Admin");
+        const roled = message.member.roles.cache.find(role => role.name === "Admin" || role.name === "Team Leader");
         if (!roled) return false;
 
         let user_id = args[0];
@@ -89,7 +89,7 @@ const COMMANDS = {
     },
 
     "reject": async (message, args) => {
-        const roled = message.author.roles.cache.find(role => role.name === "Admin");
+        const roled = message.member.roles.cache.find(role => role.name === "Admin" || role.name === "Team Leader");
         if (!roled) return false;
 
         let user_id = args[0];
