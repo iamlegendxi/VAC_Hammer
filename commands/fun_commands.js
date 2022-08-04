@@ -1,5 +1,5 @@
 const settings = require('../bot_settings');
-const private_settings = require('./settings');
+const private_settings = require('../settings');
 const fetch = require("node-fetch")
 
 const colors = require('../data/colors');
