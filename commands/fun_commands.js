@@ -81,7 +81,7 @@ const COMMANDS = {
             })
         })
 
-        let role = message.guild.roles.cache.find(r => r.id === "1004836225380798644");
+        let role = message.guild.roles.cache.find(r => r.id === "966901006652833862");
         await user.roles.add(role);
 
         await user.send("You have been accepted into the Valorant Draft Circuit!");
