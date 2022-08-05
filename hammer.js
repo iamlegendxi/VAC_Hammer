@@ -12,9 +12,9 @@ const colors = require("./data/colors");
 const cron = require("cron");
 const fetch = require("node-fetch");
 
-new cron.CronJob("*/5 * * * *", async () => {
-    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
-})
+//new cron.CronJob("*/5 * * * *", async () => {
+//    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
+///})
 
 var welcome_message = "PermFA signups are now closed! This season is currently concluding, but make sure you stick around for Season 2!";
 
@@ -95,3 +95,10 @@ bot.on("ready", () => {
     }
 
 });
+
+
+const uptimeReport = async function() {
+    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
+}
+
+setInterval(uptimeReport, 300000)
