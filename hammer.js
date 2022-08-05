@@ -12,7 +12,7 @@ const colors = require("./data/colors");
 const cron = require("cron");
 const fetch = require("node-fetch");
 
-new cron.CronJob("5 * * * *", async () => {
+new cron.CronJob("*/5 * * * *", async () => {
     await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
 })
 
