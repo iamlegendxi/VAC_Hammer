@@ -88,8 +88,8 @@ const COMMANDS = {
         
         await user.roles.add(role);
         await user.roles.add(de_role)
-
-        await user.setNickname(`DE | ${plr_data.valorantIGN}`)
+        
+        await user.setNickname(`DE | ${plr_data.data.valorantIGN}`)
 
         await user.send("You have been accepted into the Valorant Draft Circuit!");
 
