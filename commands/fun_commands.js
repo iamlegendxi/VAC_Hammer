@@ -81,10 +81,24 @@ const COMMANDS = {
             })
         })
 
-        let role = message.guild.roles.cache.find(r => r.id === "966901006652833862");
-        await user.roles.add(role);
+        const plr_data = await fetch(`https://api.valorantdraftcircuit.com/items/members?filter[discordID][_eq]=${user_id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${private_settings.API_AUTH}`
+            }
+        })
 
-        await user.setNickname(`DE | ${args[1]}`)
+        if(!plr_data) return false;
+        if(!plr_data.data[0]) return false;
+
+        let role = message.guild.roles.cache.find(r => r.id === "966901006652833862");
+        let de_role = message.guild.roles.cache.find(r => r.id === "963568945959419905");
+        
+        await user.roles.add(role);
+        await user.roles.add(de_role)
+
+        await user.setNickname(`DE | ${plr_data.data[0].valorantIGN}`)
 
         await user.send("You have been accepted into the Valorant Draft Circuit!");
 
