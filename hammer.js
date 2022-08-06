@@ -88,7 +88,7 @@ bot.login(private_settings.token);
 bot.on("ready", () => {
 
     try {
-        bot.user.setPresence({ activities: [{ name: 'in this cool new Valorant league' }], status: "online" });
+        bot.user.setPresence({ activities: [{ name: 'Valorant Draft Circuit!', type: 5 }], status: "online" });
         console.log("VAC Hammer has loaded.");
     } catch (error) {
         console.log(error);
