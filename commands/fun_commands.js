@@ -70,7 +70,7 @@ const COMMANDS = {
         let user = message.guild.members.cache.get(user_id);
         if (!user) return false;
 
-        const plr_data = await fetch(`https://api.valorantdraftcircuit.com/items/members/${user_id}`, {
+        let plr_data = await fetch(`https://api.valorantdraftcircuit.com/items/members/${user_id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -80,6 +80,8 @@ const COMMANDS = {
                 isPlayer: true
             })
         })
+
+        plr_data = await plr_data.json();
 
         let role = message.guild.roles.cache.find(r => r.id === "966901006652833862");
         let de_role = message.guild.roles.cache.find(r => r.id === "963568945959419905");
