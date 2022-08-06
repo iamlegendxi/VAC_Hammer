@@ -87,7 +87,10 @@ const COMMANDS = {
         let de_role = message.guild.roles.cache.find(r => r.id === "963568945959419905");
         
         await user.roles.add(role);
-        await user.roles.add(de_role)
+
+        if(!user.roles.cache.has("966901006652833862")){
+            await user.roles.add(de_role)
+        }
         
         await user.setNickname(`DE | ${plr_data.data.valorantIGN}`)
 
