@@ -76,7 +76,7 @@ bot.on("messageCreate", async message => {
     } catch (error) {
         console.log(error);
         message.channel.send("An error has occurred while processing this command. Contact a badmin about this issue.");
-        message.react("❌");
+        message.react("🐛");
     }
 
 })
