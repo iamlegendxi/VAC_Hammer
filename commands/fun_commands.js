@@ -68,7 +68,10 @@ const COMMANDS = {
 
         let user_id = args[0];
         let user = message.guild.members.cache.get(user_id);
-        if (!user) return false;
+        if (!user) {
+            console.log(`${message.author.id} tried to accept a user that doesn't exist: ${user_id}`);
+            return false;
+        }
 
         let plr_data = await fetch(`https://api.valorantdraftcircuit.com/items/members/${user_id}`, {
             method: "PATCH",
