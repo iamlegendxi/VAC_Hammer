@@ -90,9 +90,8 @@ const COMMANDS = {
 
         if(!user.roles.cache.has("966901006652833862")){
             await user.roles.add(de_role)
+            await user.setNickname(`DE | ${plr_data.data.valorantIGN}`)
         }
-        
-        await user.setNickname(`DE | ${plr_data.data.valorantIGN}`)
 
         await user.send("You have been accepted into the Valorant Draft Circuit!");
 
