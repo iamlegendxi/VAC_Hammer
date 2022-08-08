@@ -16,7 +16,7 @@ const fetch = require("node-fetch");
 //    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
 ///})
 
-var welcome_message = "Season 2 signups are now open, go to this channel to view signup information: #sign-up-here";
+var welcome_message = "Season 2 signups are now open, go to this channel to view signup information: <#963347135342985306>";
 
 // bot.on("interactionCreate", async interaction => {
 //     var asInteraction = true;
