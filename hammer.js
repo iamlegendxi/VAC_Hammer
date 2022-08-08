@@ -9,7 +9,12 @@ const settings = require('./bot_settings');
 const CommandParser = require("./commandparser");
 const private_settings = require('./settings');
 const colors = require("./data/colors");
+const cron = require("cron");
+const fetch = require("node-fetch");
 
+//new cron.CronJob("*/5 * * * *", async () => {
+//    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
+///})
 
 var welcome_message = "Season 2 signups are now open, go to this channel to view signup information: #sign-up-here";
 
@@ -71,7 +76,7 @@ bot.on("messageCreate", async message => {
     } catch (error) {
         console.log(error);
         message.channel.send("An error has occurred while processing this command. Contact a badmin about this issue.");
-        message.react("❌");
+        message.react("🐛");
     }
 
 })
@@ -90,3 +95,10 @@ bot.on("ready", () => {
     }
 
 });
+
+
+const uptimeReport = async function() {
+    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
+}
+
+setInterval(uptimeReport, 300000)
