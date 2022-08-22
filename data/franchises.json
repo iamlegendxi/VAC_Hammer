@@ -30,10 +30,10 @@
         "name": "Double Taps",
         "image": "https://cdn.discordapp.com/attachments/971161196696854538/1010328570863833148/Double_taps_font_discord_4.png",
         "teams": {
-            "premier": "Rapid",
-            "master": "Twice",
-            "advanced": "Succession",
-            "contender": "Quickfire"
+            "premier": "Twice",
+            "master": "Rapid",
+            "advanced": "Quickfire",
+            "contender": "Succession"
         }
     },
     "ppi": {
