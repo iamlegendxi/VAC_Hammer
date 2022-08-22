@@ -9,7 +9,7 @@ module.exports = {
     execute: async function execute(message, args) {
         var cmd_type = args[0].replace("?", "");
         if (draftMode) {
-            if (!(cmd_type.toLowerCase().includes("draft"))) {
+            if (!(cmd_type.toLowerCase().includes("draft") || cmd_type.toLowerCase().includes("trade"))) {
                 await message.channel.send("Draft mode is enabled, so only draft commands are allowed. Do ?toggleDraftMode [season] [tier] to disable this.");
                 return false;
             }
