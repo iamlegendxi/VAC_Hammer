@@ -27,26 +27,26 @@ module.exports = {
         return true;
     },
 
-    displayDates: async function displayDates(message) {
-        return await message.channel.send({
-            embeds: [new MessageEmbed()
-                .setColor(colors.vdc_default)
-                .setTitle("Dates")
-                .setDescription(`\`\`\`${DATES}\`\`\``)
-                .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-                .setTimestamp()
-                .setFooter({ text: "Dates are subject to change.", iconURL: settings.vdc_default })]
-        });
-    }
+//     displayDates: async function displayDates(message) {
+//         return await message.channel.send({
+//             embeds: [new MessageEmbed()
+//                 .setColor(colors.vdc_default)
+//                 .setTitle("Dates")
+//                 .setDescription(`\`\`\`${DATES}\`\`\``)
+//                 .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+//                 .setTimestamp()
+//                 .setFooter({ text: "Dates are subject to change.", iconURL: settings.vdc_default })]
+//         });
+//     }
 }
 
-const DATES = "Combines: 4/29, 4/30, 5/4, 5/6, 5/7\n" +
-    "Signups Close: 5/4 at 11:59pm EST\n" +
-    "Draft Order Lottery: 5/8\n" +
-    "Offseason Transactions: 5/9 - 5/10\n\n" +
-    "VDC Draft: 5/11\n\n" +
-    "Preseason Matches: 5/13, 5/18, 5/20\n\n" +
-    "Match Day 1: 5/25";
+// const DATES = "Combines: 4/29, 4/30, 5/4, 5/6, 5/7\n" +
+//     "Signups Close: 5/4 at 11:59pm EST\n" +
+//     "Draft Order Lottery: 5/8\n" +
+//     "Offseason Transactions: 5/9 - 5/10\n\n" +
+//     "VDC Draft: 5/11\n\n" +
+//     "Preseason Matches: 5/13, 5/18, 5/20\n\n" +
+//     "Match Day 1: 5/25";
 
 const NON_ADMIN_HELP = {
     "hivac": new MessageEmbed()
@@ -81,13 +81,13 @@ const NON_ADMIN_HELP = {
         .addField("Example Usage:", "``?teams hg``", false)
         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
-    "dates": new MessageEmbed()
-        .setColor(colors.vdc_default)
-        .setTitle("dates")
-        .setDescription("Displays important dates such as combines, draft, preseason, etc.")
-        .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
-        .addField("Example Usage:", "``?dates``", false)
-        .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
+//     "dates": new MessageEmbed()
+//         .setColor(colors.vdc_default)
+//         .setTitle("dates")
+//         .setDescription("Displays important dates such as combines, draft, preseason, etc.")
+//         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
+//         .addField("Example Usage:", "``?dates``", false)
+//         .setFooter({ text: "? denotes an optional field. @ denotes a user or role mention", iconURL: settings.vdc_icon_url }),
 
     "captains": new MessageEmbed()
         .setColor(colors.vdc_default)
@@ -252,7 +252,7 @@ async function showDefaultHelpMenu(message) {
         .setAuthor({ name: "VDC Help Menu", iconURL: settings.vdc_icon_url })
         .addField("Roster", "``franchises\nroster\nteams\ncaptains\nfa``", true)
         .addField("Transaction", "``Use ?help transaction to view a list of transaction commands``", true)
-        .addField("Misc.", "``hivac\ndates``")
+//         .addField("Misc.", "``hivac\ndates``")
         .setFooter({ text: "Help Menu", iconURL: settings.vdc_icon_url });
 
     await message.channel.send({ embeds: [defaultHelpMenu] });
