@@ -24,39 +24,39 @@
             "premier": "Royal Flush"
         }
     },
-    "at": {
+    "tt": {
         "role_id": "966904182223290488",
-        "gm_id": "330749415730053120",
-        "name": "Anti Tilt",
-        "image": "https://cdn.discordapp.com/attachments/966212617318326282/968877138998620210/AntiTilt_Logo_White.png",
+        "gm_id": "345999322401210368",
+        "name": "Double Taps",
+        "image": "https://cdn.discordapp.com/attachments/971161196696854538/1010328570863833148/Double_taps_font_discord_4.png",
         "teams": {
-            "premier": "Team Ego",
-            "master": "Team Upset",
-            "advanced": "Team Pragmatic",
-            "contender": "Team Positive"
+            "premier": "Rapid",
+            "master": "Twice",
+            "advanced": "Succession",
+            "contender": "Quickfire"
         }
     },
-    "pfc": {
+    "ppi": {
         "role_id": "966904250615599163",
-        "gm_id": "811383083873730561",
-        "name": "Playing For Candy",
-        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "gm_id": "301069580732989441",
+        "name": "Post Plant Incorporated",
+        "image": "https://cdn.discordapp.com/attachments/971161486208684132/1004163933562736741/PPILogoTransparent.png",
         "teams": {
-            "contender": "Candymen",
-            "advanced": "Chocolatiers",
-            "master": "Sugarcubes",
+            "contender": "Aftershock",
+            "advanced": "Snakebite",
+            "master": "Hunter's Fury",
             "premier": ""
         }
     },
-    "gt": {
+    "div": {
         "role_id": "963905754711076906",
-        "gm_id": "226536263765721091",
-        "name": "Grass Touchers",
-        "image": "https://cdn.discordapp.com/attachments/963476456409825370/966978408535965726/GT_LOGO.jpg",
+        "gm_id": "341835747797630986",
+        "name": "The Divinity",
+        "image": "https://cdn.discordapp.com/attachments/971161319640268820/1009193853674340514/divlogo.png",
         "teams": {
-            "contender": "Sod Gods",
-            "advanced": "Weed Whackers",
-            "master": "Tri-Blade",
+            "contender": "Anubis",
+            "advanced": "Set",
+            "master": "Osiris",
             "premier": ""
         }
     },
@@ -130,16 +130,16 @@
 
     },
 
-    "fnt": {
+    "vtx": {
         "role_id": "970712837003563048",
         "gm_id": "410187181160660993",
-        "name": "Finest",
-        "image": "https://cdn.discordapp.com/avatars/963499237142843454/b6157a4492b60a36b950f29dd6d4f25d",
+        "name": "Infinite Vortex",
+        "image": "https://cdn.discordapp.com/attachments/971161284223590420/1001508820473880638/vortexlogo.png",
         "teams": {
             "contender": "",
-            "advanced": "Snowflake Obsidian",
-            "master": "Moss Agate",
-            "premier": "Emerald"
+            "advanced": "Maelstrom",
+            "master": "Tempest",
+            "premier": "Hurricane"
         }
 
     },
