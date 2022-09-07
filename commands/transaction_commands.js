@@ -66,7 +66,7 @@ const COMMANDS = {
         };
         let targetId = args[0].substring(args[0].indexOf("@") + 1, args[0].indexOf(">")).replace("!", "");
         let targetMember = await message.guild.members.cache.get(targetId);
-        let desiredNickname = (args[1] ? args.slice(1).join(' ') : targetMember.user.username);
+        let desiredNickname = (args[1] ? args.slice(1).join(' ') : (targetMember.nickname === "" ? targetMember.user.username : targetMember.nickname));
         if (desiredNickname.length > 28) {
             await message.channel.send("Error: desired nickname is too long.")
             return false;
