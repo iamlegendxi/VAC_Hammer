@@ -90,7 +90,7 @@ const COMMANDS = {
         await targetMember.roles.add(deRole);
         await targetMember.roles.add(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.league_role_name));
         await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.default_role_name));
-        await targetMember.roles.remove(message.message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.permfa_role_name))
+        await targetMember.roles.remove(message.guild.roles.cache.find(r => r.name === settings.roles.player_retireable.permfa_role_name))
         await targetMember.setNickname(`DE | ${desiredNickname}`);
         return true;
     },
