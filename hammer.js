@@ -16,7 +16,7 @@ const fetch = require("node-fetch");
 //    await fetch(`https://betteruptime.com/api/v1/heartbeat/32bHi8ByVw4YmttBmfpYRsBD`)
 ///})
 
-var welcome_message = "Season 2 signups are now closed, and the draft will be held on September 7!";
+var welcome_message = "Season 2 is currently underway! Please refer to <#1026705576689938484> to sign up as a restricted free agent.";
 
 // bot.on("interactionCreate", async interaction => {
 //     var asInteraction = true;
